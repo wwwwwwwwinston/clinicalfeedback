@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competency Report - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+  <!-- Role Switcher -->
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item active" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-line-chart-line"></i> Competency Development Report</h2>
+        <p>Weekly report mapping performance evidence to competencies (Dietetic EPAs)</p>
+      </div>
+      <div class="header-actions">
+        <select class="form-control" style="width:auto; padding:6px 12px; font-size:0.8rem;">
+          <option>Week of 29 Jul - 4 Aug 2026</option>
+          <option>Week of 22 Jul - 28 Jul 2026</option>
+          <option>Week of 15 Jul - 21 Jul 2026</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Summary Stats -->
+      <div class="stats-grid mb-24">
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="ri-line-chart-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">+8%</div>
+            <div class="stat-label">Weekly Growth</div>
+            <div class="stat-change up">Across all competencies</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="ri-mic-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Feedback Episodes</div>
+            <div class="stat-change up">This week</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="ri-user-voice-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Different CEs</div>
+            <div class="stat-change up">Multi-source feedback</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange"><i class="ri-alarm-warning-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Alerts</div>
+            <div class="stat-change down">Documentation speed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Summative Scoring Notice -->
+      <div class="card mb-24" style="padding:12px 20px; border-color:var(--secondary); background:rgba(0,180,166,0.04);">
+        <div class="flex items-center gap-12">
+          <i class="ri-information-line" style="font-size:18px; color:var(--secondary);"></i>
+          <span class="text-sm text-secondary"><strong>Note:</strong> This report provides formative evidence only - no summative scoring. Click each competency to view the supporting feedback summaries.</span>
+        </div>
+      </div>
+
+      <!-- Competency Evidence Grid (clickable) -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Competency Evidence Map - This Week</div>
+            <div class="card-subtitle">Click each competency to view linked feedback summaries</div>
+          </div>
+          <span class="badge badge-blue"><i class="ri-calendar-line"></i> Week 29 Jul - 4 Aug</span>
+        </div>
+
+        <div class="flex flex-col gap-16">
+          <!-- EPA 1: Medical Nutrition Therapy -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius-lg); border:1px solid var(--border); cursor:pointer; transition:all 0.2s;" onclick="showNotification('Medical Nutrition Therapy: 3 feedback episodes with evidence this week','info')" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div style="width:32px; height:32px; background:var(--primary-light); border-radius:var(--radius); display:flex; align-items:center; justify-content:center;"><i class="ri-heart-pulse-line" style="color:var(--primary);"></i></div>
+                <span class="font-bold text-sm">Medical Nutrition Therapy</span>
+              </div>
+              <div class="flex items-center gap-8">
+                <span class="badge badge-blue">3 episodes</span>
+                <i class="ri-arrow-right-s-line" style="color:var(--text-muted);"></i>
+              </div>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar blue" style="width:85%"></div></div>
+            <div class="text-xs text-muted">Evidence: nutrition assessment (P.T.), malnutrition risk identification (M.K.), enteral feeding plan (R.L.)</div>
+          </div>
+
+          <!-- EPA 2: Nutrition Assessment -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius-lg); border:1px solid var(--border); cursor:pointer; transition:all 0.2s;" onclick="showNotification('Nutrition Assessment: 2 feedback episodes with evidence this week','info')" onmouseover="this.style.borderColor='var(--success)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div style="width:32px; height:32px; background:var(--success-light); border-radius:var(--radius); display:flex; align-items:center; justify-content:center;"><i class="ri-search-eye-line" style="color:var(--success);"></i></div>
+                <span class="font-bold text-sm">Nutrition Assessment</span>
+              </div>
+              <div class="flex items-center gap-8">
+                <span class="badge badge-green">2 episodes</span>
+                <i class="ri-arrow-right-s-line" style="color:var(--text-muted);"></i>
+              </div>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar green" style="width:78%"></div></div>
+            <div class="text-xs text-muted">Evidence: SGA tool use (P.T.), anthropometric assessment (S.W.)</div>
+          </div>
+
+          <!-- EPA 3: Communication -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius-lg); border:1px solid var(--border); cursor:pointer; transition:all 0.2s;" onclick="showNotification('Communication: 4 feedback episodes with evidence this week','info')" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div style="width:32px; height:32px; background:var(--purple-light); border-radius:var(--radius); display:flex; align-items:center; justify-content:center;"><i class="ri-chat-smile-3-line" style="color:var(--purple);"></i></div>
+                <span class="font-bold text-sm">Communication</span>
+              </div>
+              <div class="flex items-center gap-8">
+                <span class="badge badge-purple">4 episodes</span>
+                <i class="ri-arrow-right-s-line" style="color:var(--text-muted);"></i>
+              </div>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar purple" style="width:82%"></div></div>
+            <div class="text-xs text-muted">Evidence: patient rapport (P.T., M.K.), empathetic communication (P.T.), goal setting (S.W.)</div>
+          </div>
+
+          <!-- EPA 4: Professional Practice -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius-lg); border:1px solid var(--border); cursor:pointer; transition:all 0.2s;" onclick="showNotification('Professional Practice: 3 feedback episodes - includes area for improvement','info')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div style="width:32px; height:32px; background:var(--accent-light); border-radius:var(--radius); display:flex; align-items:center; justify-content:center;"><i class="ri-briefcase-line" style="color:var(--accent);"></i></div>
+                <span class="font-bold text-sm">Professional Practice</span>
+              </div>
+              <div class="flex items-center gap-8">
+                <span class="badge badge-orange">3 episodes</span>
+                <i class="ri-arrow-right-s-line" style="color:var(--text-muted);"></i>
+              </div>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar orange" style="width:68%"></div></div>
+            <div class="text-xs text-muted">Evidence: documentation speed (P.T., M.K., R.L.) - <strong style="color:var(--accent);">recurring area for improvement</strong></div>
+          </div>
+
+          <!-- EPA 5: Food Service Management -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius-lg); border:1px solid var(--border); cursor:pointer; transition:all 0.2s;" onclick="showNotification('Food Service Management: 1 feedback episode this week','info')" onmouseover="this.style.borderColor='var(--secondary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div style="width:32px; height:32px; background:#E0F7F5; border-radius:var(--radius); display:flex; align-items:center; justify-content:center;"><i class="ri-restaurant-line" style="color:var(--secondary);"></i></div>
+                <span class="font-bold text-sm">Food Service Management</span>
+              </div>
+              <div class="flex items-center gap-8">
+                <span class="badge badge-teal">1 episode</span>
+                <i class="ri-arrow-right-s-line" style="color:var(--text-muted);"></i>
+              </div>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar blue" style="width:71%"></div></div>
+            <div class="text-xs text-muted">Evidence: menu planning discussion (S.W.)</div>
+          </div>
+
+          <!-- EPA 6: Research & Evidence -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius-lg); border:1px solid var(--border); cursor:pointer; transition:all 0.2s;" onclick="showNotification('Research & Evidence: No new evidence this week','info')" onmouseover="this.style.borderColor='var(--text-muted)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div style="width:32px; height:32px; background:var(--bg); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; border:1px solid var(--border);"><i class="ri-book-2-line" style="color:var(--text-muted);"></i></div>
+                <span class="font-bold text-sm">Research & Evidence-Based Practice</span>
+              </div>
+              <div class="flex items-center gap-8">
+                <span class="badge badge-gray">0 episodes</span>
+                <i class="ri-arrow-right-s-line" style="color:var(--text-muted);"></i>
+              </div>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar blue" style="width:65%"></div></div>
+            <div class="text-xs text-muted">No new evidence this week - last evidence from 22 Jul (literature review discussion)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert Flags -->
+      <div class="card mb-24" style="border-color:var(--warning); background:var(--warning-light);">
+        <div class="card-header">
+          <div>
+            <div class="card-title" style="color:#92400E;"><i class="ri-alarm-warning-line"></i> Alert Flags</div>
+            <div class="card-subtitle" style="color:#78350F;">Automated alerts based on feedback patterns</div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12">
+          <div class="flex items-center gap-12" style="padding:12px; background:rgba(255,255,255,0.7); border-radius:var(--radius); border:1px solid #FDE68A;">
+            <i class="ri-error-warning-fill" style="color:var(--danger); font-size:20px;"></i>
+            <div style="flex:1;">
+              <div class="text-sm font-bold" style="color:#991B1B;">Recurring Issue: Documentation Speed</div>
+              <div class="text-xs" style="color:#78350F;">Flagged in <strong>6 out of 8</strong> feedback episodes (exceeds 5-episode threshold). Multiple CEs have noted this area.</div>
+            </div>
+            <a href="goals.html" class="btn btn-sm btn-warning"><i class="ri-arrow-right-line"></i> View Goal</a>
+          </div>
+          <div class="flex items-center gap-12" style="padding:12px; background:rgba(255,255,255,0.7); border-radius:var(--radius); border:1px solid #FDE68A;">
+            <i class="ri-time-line" style="color:var(--warning); font-size:20px;"></i>
+            <div style="flex:1;">
+              <div class="text-sm font-bold" style="color:#92400E;">No Progress Alert: Research & Evidence</div>
+              <div class="text-xs" style="color:#78350F;">No new evidence for this competency in <strong>2 weeks</strong>. Consider seeking opportunities during next rotation.</div>
+            </div>
+            <button class="btn btn-sm btn-secondary" onclick="showNotification('Suggestion: Ask your CE for a research-related task this week','info')"><i class="ri-lightbulb-line"></i> Suggestions</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Performance Trend & Feedback Episodes -->
+      <div class="grid-2 mb-24">
+        <!-- Weekly Progression Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Competency Trend (6 Weeks)</div>
+              <div class="card-subtitle">Performance evidence trajectory</div>
+            </div>
+          </div>
+          <div class="line-chart-wrap" style="height:200px;">
+            <svg viewBox="0 0 700 180" preserveAspectRatio="none" style="height:180px;">
+              <line class="chart-grid-line" x1="50" y1="20" x2="680" y2="20"/>
+              <line class="chart-grid-line" x1="50" y1="60" x2="680" y2="60"/>
+              <line class="chart-grid-line" x1="50" y1="100" x2="680" y2="100"/>
+              <line class="chart-grid-line" x1="50" y1="140" x2="680" y2="140"/>
+              <text class="chart-axis-label" x="10" y="24">High</text>
+              <text class="chart-axis-label" x="10" y="104">Mid</text>
+              <text class="chart-axis-label" x="10" y="164">Low</text>
+              <text class="chart-axis-label" x="90" y="175">Wk1</text>
+              <text class="chart-axis-label" x="205" y="175">Wk2</text>
+              <text class="chart-axis-label" x="320" y="175">Wk3</text>
+              <text class="chart-axis-label" x="435" y="175">Wk4</text>
+              <text class="chart-axis-label" x="550" y="175">Wk5</text>
+              <text class="chart-axis-label" x="640" y="175">Wk6</text>
+              <!-- MNT -->
+              <polyline class="chart-line" stroke="var(--primary)" points="90,110 205,95 320,80 435,65 550,50 650,35"/>
+              <!-- Communication -->
+              <polyline class="chart-line" stroke="var(--purple)" points="90,120 205,105 320,90 435,75 550,60 650,45"/>
+              <!-- Professional -->
+              <polyline class="chart-line" stroke="var(--accent)" points="90,130 205,125 320,118 435,112 550,105 650,95"/>
+              <circle class="chart-dot" fill="var(--primary)" cx="650" cy="35" r="5"/>
+              <circle class="chart-dot" fill="var(--purple)" cx="650" cy="45" r="5"/>
+              <circle class="chart-dot" fill="var(--accent)" cx="650" cy="95" r="5"/>
+            </svg>
+          </div>
+          <div class="chart-legend mt-12">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--primary);"></div> Medical Nutrition Therapy</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--purple);"></div> Communication</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div> Professional Practice</div>
+          </div>
+        </div>
+
+        <!-- This Week's Feedback Episodes -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">This Week's Feedback Episodes</div>
+              <div class="card-subtitle">Sessions contributing to this report</div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-12">
+            <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="avatar avatar-sm avatar-blue">PT</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Patient P.T. - Outpatient</div>
+                <div class="text-xs text-muted">4 Aug | CE: Dr Palmer | Confirmed</div>
+              </div>
+              <a href="analysis.html" class="btn btn-sm btn-ghost"><i class="ri-eye-line"></i></a>
+            </div>
+            <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="avatar avatar-sm avatar-purple">MK</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Patient M.K. - Ward Round</div>
+                <div class="text-xs text-muted">2 Aug | CE: Dr Palmer | Confirmed</div>
+              </div>
+              <a href="analysis.html" class="btn btn-sm btn-ghost"><i class="ri-eye-line"></i></a>
+            </div>
+            <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="avatar avatar-sm avatar-orange">RL</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Patient R.L. - ICU Consult</div>
+                <div class="text-xs text-muted">31 Jul | CE: Dr Kim | Confirmed</div>
+              </div>
+              <a href="analysis.html" class="btn btn-sm btn-ghost"><i class="ri-eye-line"></i></a>
+            </div>
+            <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="avatar avatar-sm avatar-green">SW</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Patient S.W. - Outpatient</div>
+                <div class="text-xs text-muted">30 Jul | CE: Dr Lee | Pending</div>
+              </div>
+              <a href="analysis.html" class="btn btn-sm btn-ghost"><i class="ri-eye-line"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Type Evidence -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-hospital-line"></i> Evidence by Case Type</div>
+            <div class="card-subtitle">Competency & entrustment level evidence across case types</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">Case Type</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">MNT</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">Assessment</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">Comms</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">Professional</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">Entrustment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px; font-weight:600;">Malnutrition</td><td style="padding:4px;"><div class="heatmap-cell level-4" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-4" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-2" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:10px; text-align:center;"><span class="badge badge-blue">Supervised</span></td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px; font-weight:600;">Enteral Nutrition</td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-2" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:10px; text-align:center;"><span class="badge badge-orange">Developing</span></td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px; font-weight:600;">Diabetes MNT</td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-4" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-4" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:10px; text-align:center;"><span class="badge badge-green">Independent</span></td></tr>
+              <tr><td style="padding:10px; font-weight:600;">Renal Nutrition</td><td style="padding:4px;"><div class="heatmap-cell level-2" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-2" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-3" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:4px;"><div class="heatmap-cell level-1" style="width:100%; height:28px; border-radius:4px;"></div></td><td style="padding:10px; text-align:center;"><span class="badge badge-orange">Developing</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart-legend mt-12">
+          <div class="legend-item"><div class="heatmap-cell level-1" style="width:16px; height:16px; border-radius:3px;"></div> Novice</div>
+          <div class="legend-item"><div class="heatmap-cell level-2" style="width:16px; height:16px; border-radius:3px;"></div> Developing</div>
+          <div class="legend-item"><div class="heatmap-cell level-3" style="width:16px; height:16px; border-radius:3px;"></div> Competent</div>
+          <div class="legend-item"><div class="heatmap-cell level-4" style="width:16px; height:16px; border-radius:3px;"></div> Proficient</div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>

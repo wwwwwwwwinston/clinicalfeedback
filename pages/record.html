@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record Feedback - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+
+  <!-- Role Switcher -->
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item active" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback<span class="nav-badge">ASR</span></a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-mic-line"></i> Record Feedback</h2>
+        <p>Capture verbal feedback using AI speech recognition</p>
+      </div>
+      <div class="header-actions">
+        <span class="header-date"><i class="ri-calendar-line"></i> 4 Aug 2026</span>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Recording Context -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-title mb-16">Session Details</div>
+          <div class="form-group">
+            <label class="form-label">Student</label>
+            <div id="studentSelectContainer">
+              <!-- Dynamically populated based on logged-in role -->
+            </div>
+          </div>
+
+          <!-- Optional: Add other students to session -->
+          <div class="form-group" id="addStudentsGroup" style="display:none;">
+            <label class="form-label">Additional Students (optional)</label>
+            <div id="additionalStudentsList" class="flex flex-col gap-8"></div>
+            <button class="btn btn-sm btn-secondary mt-8" onclick="toggleAddStudents()"><i class="ri-add-line"></i> Add Another Student</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Clinical Setting</label>
+            <select class="form-control" id="placementSelect">
+              <option value="">Select setting...</option>
+              <option value="ward">Hospital Ward</option>
+              <option value="outpatient" selected>Outpatient Clinic</option>
+              <option value="icu">Intensive Care Unit</option>
+              <option value="community">Community Clinic</option>
+              <option value="foodservice">Food Service</option>
+              <option value="aged">Aged Care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Patient Identifier (Initials Only)</label>
+            <input type="text" class="form-control" id="patientInitials" placeholder="e.g. P.T." maxlength="5">
+            <div class="text-xs text-muted mt-4"><i class="ri-shield-check-line"></i> Full patient identifiers are automatically removed from recordings</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Encounter Type</label>
+            <select class="form-control">
+              <option>End-of-shift feedback</option>
+              <option>Patient encounter debrief</option>
+              <option selected>Clinical observation</option>
+              <option>Mid-rotation review</option>
+              <option>Written feedback upload</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Speakers Present</label>
+            <div class="flex gap-8 flex-wrap">
+              <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; cursor:pointer;">
+                <input type="checkbox" checked> Clinical Educator
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; cursor:pointer;">
+                <input type="checkbox" checked> Student
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; cursor:pointer;">
+                <input type="checkbox"> Other Staff
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recording Panel -->
+        <div class="card" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+          <!-- Recording Status Indicator -->
+          <div id="recordingStatus" style="margin-bottom:16px;">
+            <div style="width:100px; height:100px; border-radius:50%; background:var(--primary-light); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; border:3px solid var(--primary); position:relative;" id="micCircle">
+              <i class="ri-mic-line" style="font-size:36px; color:var(--primary);" id="micIcon"></i>
+              <div id="pulseRing" style="position:absolute; inset:-8px; border-radius:50%; border:2px solid var(--primary); opacity:0;"></div>
+            </div>
+            <div class="text-sm font-bold" id="recordLabel">Ready to Record</div>
+            <div class="text-xs text-muted mt-4" id="recordTimer">00:00</div>
+          </div>
+
+          <!-- Visible Recording Status Badge -->
+          <div id="statusBadge" class="mb-16">
+            <span class="badge badge-green" id="recStatusBadge"><i class="ri-checkbox-circle-line"></i> ASR Ready</span>
+          </div>
+
+          <!-- Waveform Visualisation -->
+          <div class="waveform-container mb-16" id="waveform" style="min-height:40px; width:100%;"></div>
+
+          <!-- Controls -->
+          <div class="flex gap-12 items-center mb-20">
+            <button class="btn btn-primary btn-lg" id="recordBtn" onclick="toggleRecording()">
+              <i class="ri-mic-line"></i> Start Recording
+            </button>
+            <button class="btn btn-secondary" id="pauseBtn" onclick="pauseRecording()" disabled>
+              <i class="ri-pause-line"></i> Pause
+            </button>
+            <button class="btn btn-danger btn-sm" id="stopBtn" onclick="stopRecording()" disabled>
+              <i class="ri-stop-line"></i> Stop
+            </button>
+          </div>
+
+          <!-- Noise Removal Indicator -->
+          <div class="flex items-center gap-8 mb-12" style="background:var(--bg); padding:8px 14px; border-radius:var(--radius); border:1px solid var(--border);">
+            <i class="ri-volume-mute-line" style="color:var(--secondary);"></i>
+            <span class="text-xs">Background noise reduction: <strong style="color:var(--success);">Active</strong></span>
+          </div>
+
+          <div class="text-xs text-muted" style="max-width:320px;">
+            <i class="ri-information-line"></i> Audio is processed locally. Patient identifiers are auto-removed. Multi-speaker detection enabled.
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Transcription Output -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-file-text-line"></i> Live Transcription</div>
+            <div class="card-subtitle">Real-time speech-to-text with speaker detection</div>
+          </div>
+          <div class="flex gap-8">
+            <span class="badge badge-green" id="asrStatus"><i class="ri-checkbox-circle-line"></i> ASR Ready</span>
+            <button class="btn btn-sm btn-secondary" onclick="clearTranscript()"><i class="ri-delete-bin-line"></i> Clear</button>
+          </div>
+        </div>
+        
+        <!-- Editable Transcript Area -->
+        <div class="editable-section">
+          <div class="edit-btn-float" onclick="toggleEdit(this)" data-tooltip="Edit transcript"><i class="ri-edit-line"></i></div>
+          <div id="transcriptArea" class="editable-content" style="min-height:140px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:16px; font-size:0.9rem; line-height:1.8; color:var(--text-secondary);">
+            <span class="text-muted" id="transcriptPlaceholder">Transcribed text will appear here in real-time as you speak...<br><br><em style="font-size:0.8rem;">Patient identifiers will be automatically redacted and replaced with initials.</em></span>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center mt-16">
+          <div class="text-xs text-muted">
+            <span id="wordCount">0</span> words | Confidence: <span id="confidence">--</span> | 
+            <span style="color:var(--secondary);"><i class="ri-shield-check-line"></i> De-identified</span>
+          </div>
+          <div class="flex gap-8">
+            <button class="btn btn-sm btn-secondary" onclick="toggleEdit(this.closest('.card').querySelector('.edit-btn-float'))"><i class="ri-edit-line"></i> Edit Transcript</button>
+            <button class="btn btn-sm btn-teal" onclick="processTranscript()"><i class="ri-brain-line"></i> Generate Summary</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Written Feedback Option -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-upload-2-line"></i> Upload Written Feedback</div>
+            <div class="card-subtitle">Upload text-based feedback to generate a summary</div>
+          </div>
+        </div>
+        <div style="background:var(--bg); border:2px dashed var(--border); border-radius:var(--radius); padding:32px; text-align:center;">
+          <i class="ri-file-upload-line" style="font-size:36px; color:var(--text-muted); margin-bottom:8px;"></i>
+          <div class="text-sm text-secondary font-semibold">Drag and drop a file here, or click to browse</div>
+          <div class="text-xs text-muted mt-4">Supports .txt, .docx, .pdf - Max 10MB</div>
+          <button class="btn btn-sm btn-secondary mt-16" onclick="showNotification('File upload feature - select a written feedback document','info')"><i class="ri-upload-line"></i> Choose File</button>
+        </div>
+      </div>
+
+      <!-- Previous Recordings -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Previous Recordings</div>
+            <div class="card-subtitle">Past feedback sessions (labelled by patient initials)</div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12">
+          <div class="flex items-center gap-12" style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="avatar avatar-sm avatar-blue">PT</div>
+            <div style="flex:1;">
+              <div class="text-sm font-semibold">Patient P.T. - Outpatient Clinic</div>
+              <div class="text-xs text-muted">2 min 34 sec | 1 Aug 2026 | CE: Dr Palmer</div>
+            </div>
+            <span class="badge badge-green">Transcribed</span>
+            <button class="btn btn-sm btn-ghost"><i class="ri-play-line"></i></button>
+          </div>
+          <div class="flex items-center gap-12" style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="avatar avatar-sm avatar-purple">MK</div>
+            <div style="flex:1;">
+              <div class="text-sm font-semibold">Patient M.K. - Ward Round</div>
+              <div class="text-xs text-muted">4 min 12 sec | 30 Jul 2026 | CE: Dr Palmer</div>
+            </div>
+            <span class="badge badge-green">Transcribed</span>
+            <button class="btn btn-sm btn-ghost"><i class="ri-play-line"></i></button>
+          </div>
+          <div class="flex items-center gap-12" style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="avatar avatar-sm avatar-orange">RL</div>
+            <div style="flex:1;">
+              <div class="text-sm font-semibold">Patient R.L. - ICU Consult</div>
+              <div class="text-xs text-muted">1 min 58 sec | 28 Jul 2026 | CE: Dr Kim</div>
+            </div>
+            <span class="badge badge-blue">Processing</span>
+            <button class="btn btn-sm btn-ghost"><i class="ri-play-line"></i></button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+  <script src="../js/recording.js"></script>
+  <script>
+  // --- Student Selector Logic ---
+  function initStudentSelector() {
+    const container = document.getElementById('studentSelectContainer');
+    const addGroup = document.getElementById('addStudentsGroup');
+    if (!container) return;
+
+    const acct = getCurrentAccount();
+
+    if (currentRole === 'student') {
+      // Student: locked to their own account, show as read-only
+      container.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius);">
+          <div class="avatar avatar-sm ${acct.avatarClass}">${acct.initials}</div>
+          <div style="flex:1;">
+            <div class="font-semibold text-sm">${acct.name}</div>
+            <div class="text-xs text-muted">${acct.year} | ${acct.placement}</div>
+          </div>
+          <span class="badge badge-blue"><i class="ri-lock-line"></i> You</span>
+        </div>
+        <div class="text-xs text-muted mt-4"><i class="ri-information-line"></i> Recording feedback for your own account</div>
+      `;
+      // Show optional add students button
+      if (addGroup) {
+        addGroup.style.display = 'block';
+        addGroup.querySelector('#additionalStudentsList').innerHTML = '';
+      }
+    } else if (currentRole === 'ce' || currentRole === 'admin') {
+      // CE/Admin: can select any student
+      let options = '<option value="">Select student...</option>';
+      ACCOUNTS.students.forEach(s => {
+        options += `<option value="${s.id}">${s.name} (${s.placement})</option>`;
+      });
+      container.innerHTML = `
+        <select class="form-control" id="studentSelect">${options}</select>
+      `;
+      // Show optional add students
+      if (addGroup) {
+        addGroup.style.display = 'block';
+        addGroup.querySelector('#additionalStudentsList').innerHTML = '';
+      }
+    }
+  }
+
+  function toggleAddStudents() {
+    const list = document.getElementById('additionalStudentsList');
+    if (!list) return;
+
+    const acct = getCurrentAccount();
+    // Get students not already added
+    const existing = Array.from(list.querySelectorAll('[data-student-id]')).map(el => el.dataset.studentId);
+    const currentId = currentRole === 'student' ? acct.id : (document.getElementById('studentSelect')?.value || '');
+    
+    const available = ACCOUNTS.students.filter(s => s.id !== currentId && !existing.includes(s.id));
+    
+    if (available.length === 0) {
+      showNotification('All students have been added to this session', 'info');
+      return;
+    }
+
+    // Add a selector row
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex; align-items:center; gap:8px;';
+    
+    let options = '<option value="">Select student to add...</option>';
+    available.forEach(s => {
+      options += `<option value="${s.id}">${s.name} (${s.placement})</option>`;
+    });
+
+    row.innerHTML = `
+      <select class="form-control" style="flex:1;" onchange="confirmAddStudent(this)">
+        ${options}
+      </select>
+      <button class="btn btn-sm btn-ghost" onclick="this.parentElement.remove()" style="color:var(--danger);"><i class="ri-delete-bin-line"></i></button>
+    `;
+    list.appendChild(row);
+  }
+
+  function confirmAddStudent(selectEl) {
+    const val = selectEl.value;
+    if (!val) return;
+    const student = ACCOUNTS.students.find(s => s.id === val);
+    if (!student) return;
+
+    const row = selectEl.parentElement;
+    row.dataset.studentId = val;
+    row.innerHTML = `
+      <div style="display:flex; align-items:center; gap:8px; flex:1; padding:8px 12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+        <div class="avatar avatar-sm ${student.avatarClass}" style="width:24px; height:24px; font-size:9px;">${student.initials}</div>
+        <span class="text-sm">${student.name}</span>
+        <span class="badge badge-gray" style="margin-left:auto;">${student.placement}</span>
+      </div>
+      <button class="btn btn-sm btn-ghost" onclick="this.parentElement.remove()" style="color:var(--danger);"><i class="ri-close-line"></i></button>
+    `;
+    showNotification(`${student.name} added to this session`, 'success');
+  }
+
+  // Init on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    initStudentSelector();
+  });
+  </script>
+</body>
+</html>

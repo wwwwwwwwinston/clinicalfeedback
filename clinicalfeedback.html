@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CliniQ - AI Clinical Feedback Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/charts.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+
+  <!-- Role Switcher (always visible) -->
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')">
+      <i class="ri-user-line"></i> Student
+    </button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')">
+      <i class="ri-user-star-line"></i> Clinical Educator
+    </button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')">
+      <i class="ri-shield-user-line"></i> Admin
+    </button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text">
+        <h1>CliniQ</h1>
+        <span>Clinical Feedback AI</span>
+      </div>
+    </div>
+
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info">
+        <div class="user-name">James Chen</div>
+        <div class="user-role">Year 3 Dietetics Student</div>
+      </div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" href="index.html" data-roles="student,ce,admin">
+        <span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard
+      </a>
+      <a class="nav-item" href="pages/record.html" data-roles="student,ce">
+        <span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback
+        <span class="nav-badge">ASR</span>
+      </a>
+      <a class="nav-item" href="pages/analysis.html" data-roles="student,ce">
+        <span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary
+      </a>
+      <a class="nav-item" href="pages/progress.html" data-roles="student,ce,admin">
+        <span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report
+      </a>
+      <a class="nav-item" href="pages/goals.html" data-roles="student,ce">
+        <span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals
+      </a>
+
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="pages/educator.html" data-roles="ce,admin">
+        <span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources
+      </a>
+      <a class="nav-item" href="pages/feedback-quality.html" data-roles="ce,admin">
+        <span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality
+      </a>
+      <a class="nav-item" href="pages/ce-dashboard.html" data-roles="ce,admin">
+        <span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard
+        <span class="nav-badge">3</span>
+      </a>
+      <a class="nav-item" href="pages/students.html" data-roles="ce,admin">
+        <span class="nav-icon"><i class="ri-group-line"></i></span> Students
+      </a>
+
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="pages/admin.html" data-roles="admin">
+        <span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance
+      </a>
+      <a class="nav-item" data-roles="student,ce,admin" onclick="openSettings()">
+        <span class="nav-icon"><i class="ri-settings-3-line"></i></span> Settings
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <a class="nav-item" onclick="openAccountPicker()" id="accountSwitcherBtn" style="cursor:pointer;">
+        <span class="nav-icon"><i class="ri-swap-line"></i></span> Switch Account
+        <span class="nav-badge" style="background:var(--primary); font-size:0.6rem;">JC</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="ri-logout-box-r-line"></i></span> Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" id="menuToggle" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2>Dashboard</h2>
+        <p>Overview of clinical feedback and competency metrics</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm btn-primary" onclick="downloadProject()" id="downloadBtn"><i class="ri-download-line"></i> Download Project</button>
+        <span class="header-date"><i class="ri-calendar-line"></i> 4 Aug 2026</span>
+        <button class="header-btn" data-tooltip="Notifications"><i class="ri-notification-3-line"></i><span class="notif-dot"></span></button>
+        <button class="header-btn" data-tooltip="Help"><i class="ri-question-line"></i></button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Welcome Banner -->
+      <div class="card mb-24" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border:none;">
+        <div class="flex items-center justify-between" style="flex-wrap:wrap; gap:16px;">
+          <div>
+            <h3 style="color:#fff; font-size:1.2rem; font-weight:700; margin-bottom:4px;">Welcome back, <span id="welcomeName">James Chen</span></h3>
+            <p style="color:rgba(255,255,255,0.8); font-size:0.85rem;" data-visible-roles="student">You have 2 new feedback summaries ready for review</p>
+            <p style="color:rgba(255,255,255,0.8); font-size:0.85rem;" data-visible-roles="ce">You have 3 new feedback transcriptions ready for review</p>
+            <p style="color:rgba(255,255,255,0.8); font-size:0.85rem;" data-visible-roles="admin">System overview: 34 active users, 2 pending reviews</p>
+          </div>
+          <a href="pages/record.html" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3); backdrop-filter:blur(4px);" data-visible-roles="student,ce">
+            <i class="ri-mic-line"></i> Record New Feedback
+          </a>
+          <a href="pages/admin.html" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3); backdrop-filter:blur(4px);" data-visible-roles="admin">
+            <i class="ri-shield-check-line"></i> View Governance Panel
+          </a>
+        </div>
+      </div>
+
+      <!-- ============ STUDENT DASHBOARD ============ -->
+      <div data-visible-roles="student">
+        <!-- Student Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="ri-mic-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">24</div>
+              <div class="stat-label">Feedback Episodes</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> +3 this week</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal"><i class="ri-user-heart-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">6</div>
+              <div class="stat-label">CEs Who Gave Feedback</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> Multi-source</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="ri-award-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">82%</div>
+              <div class="stat-label">Competency Progress</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> +4% this month</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="ri-focus-3-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">5/8</div>
+              <div class="stat-label">Goals Achieved</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> 2 this month</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student: Competency + Recent Feedback -->
+        <div class="grid-2 mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">My Competency Progress</div>
+                <div class="card-subtitle">Dietetic EPAs - Click each to view feedback</div>
+              </div>
+              <span class="badge badge-blue"><i class="ri-refresh-line"></i> Updated</span>
+            </div>
+            <div class="competency-wheel">
+              <div class="competency-item" onclick="showNotification('Viewing Medical Nutrition Therapy feedback details','info')">
+                <div class="competency-item-header">
+                  <span class="competency-name">Medical Nutrition Therapy</span>
+                  <span class="competency-score">85%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar blue" style="width:85%"></div></div>
+              </div>
+              <div class="competency-item" onclick="showNotification('Viewing Nutrition Assessment feedback details','info')">
+                <div class="competency-item-header">
+                  <span class="competency-name">Nutrition Assessment</span>
+                  <span class="competency-score">78%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar green" style="width:78%"></div></div>
+              </div>
+              <div class="competency-item" onclick="showNotification('Viewing Communication feedback details','info')">
+                <div class="competency-item-header">
+                  <span class="competency-name">Communication</span>
+                  <span class="competency-score">82%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar purple" style="width:82%"></div></div>
+              </div>
+              <div class="competency-item" onclick="showNotification('Viewing Professional Practice feedback details','info')">
+                <div class="competency-item-header">
+                  <span class="competency-name">Professional Practice</span>
+                  <span class="competency-score">76%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar orange" style="width:76%"></div></div>
+              </div>
+              <div class="competency-item" onclick="showNotification('Viewing Food Service Management feedback details','info')">
+                <div class="competency-item-header">
+                  <span class="competency-name">Food Service Management</span>
+                  <span class="competency-score">71%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar green" style="width:71%"></div></div>
+              </div>
+              <div class="competency-item" onclick="showNotification('Viewing Research & Evidence feedback details','info')">
+                <div class="competency-item-header">
+                  <span class="competency-name">Research & Evidence</span>
+                  <span class="competency-score">68%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar blue" style="width:68%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Student: Recent Feedback (labelled by patient initials) -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Recent Feedback Summaries</div>
+                <div class="card-subtitle">By patient case (initials only)</div>
+              </div>
+              <a href="pages/analysis.html" class="btn btn-sm btn-secondary"><i class="ri-eye-line"></i> View All</a>
+            </div>
+            <div class="flex flex-col gap-12 stagger-children">
+              <div class="flex gap-12 items-center animate-fade" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-blue">PT</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">Patient P.T. - Outpatient Clinic</div>
+                  <div class="text-xs text-muted">Strength: Thorough nutrition assessment. Improve: Documentation speed</div>
+                </div>
+                <span class="badge badge-green">Confirmed</span>
+              </div>
+              <div class="flex gap-12 items-center animate-fade" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-purple">MK</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">Patient M.K. - Ward Round</div>
+                  <div class="text-xs text-muted">Strength: Patient communication. Improve: Time management</div>
+                </div>
+                <span class="badge badge-green">Confirmed</span>
+              </div>
+              <div class="flex gap-12 items-center animate-fade" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-orange">RL</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">Patient R.L. - ICU Consult</div>
+                  <div class="text-xs text-muted">Strength: Critical thinking. Improve: Enteral feeding protocol</div>
+                </div>
+                <span class="badge badge-blue">Pending Review</span>
+              </div>
+              <div class="flex gap-12 items-center animate-fade" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-green">SW</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">Patient S.W. - Outpatient Clinic</div>
+                  <div class="text-xs text-muted">Strength: Goal setting with patient. Improve: Follow-up planning</div>
+                </div>
+                <span class="badge badge-purple">Generating</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student: Goals & Actions summary -->
+        <div class="grid-2 mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i class="ri-focus-3-line"></i> Active Goals</div>
+                <div class="card-subtitle">AI-generated from feedback patterns</div>
+              </div>
+              <span class="badge badge-orange">3 active</span>
+            </div>
+            <div class="flex flex-col gap-12">
+              <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="flex justify-between items-center mb-8">
+                  <span class="text-sm font-semibold">Improve Documentation Efficiency</span>
+                  <span class="text-xs font-bold" style="color:var(--accent);">60%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar orange" style="width:60%"></div></div>
+              </div>
+              <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="flex justify-between items-center mb-8">
+                  <span class="text-sm font-semibold">Enhance Handover Communication</span>
+                  <span class="text-xs font-bold" style="color:var(--primary);">35%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar blue" style="width:35%"></div></div>
+              </div>
+              <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="flex justify-between items-center mb-8">
+                  <span class="text-sm font-semibold">Develop Time Management</span>
+                  <span class="text-xs font-bold" style="color:var(--purple);">10%</span>
+                </div>
+                <div class="progress-bar-wrap"><div class="progress-bar purple" style="width:10%"></div></div>
+              </div>
+            </div>
+            <a href="pages/goals.html" class="btn btn-sm btn-secondary mt-16" style="width:100%; justify-content:center;"><i class="ri-arrow-right-line"></i> View All Goals & Action Plans</a>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i class="ri-checkbox-circle-line"></i> Completed Goals</div>
+                <div class="card-subtitle">Previously achieved objectives</div>
+              </div>
+              <span class="badge badge-green">5 done</span>
+            </div>
+            <div class="flex flex-col gap-8">
+              <div class="flex items-center gap-8" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm">Systematic Nutrition Assessment</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm">Patient Rapport Building</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm">Evidence-Based Interventions</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm">Critical Care Nutrition Protocols</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm">Multidisciplinary Team Communication</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alert: flag for recurring issues -->
+        <div class="card" style="border-color: var(--warning); background: var(--warning-light);">
+          <div class="flex items-center gap-12">
+            <div style="width:44px; height:44px; background:#FDE68A; border-radius:var(--radius); display:flex; align-items:center; justify-content:center;">
+              <i class="ri-alarm-warning-line" style="font-size:22px; color:var(--warning);"></i>
+            </div>
+            <div style="flex:1;">
+              <div class="text-sm font-bold" style="color:#92400E;">Alert: Recurring Area for Improvement</div>
+              <div class="text-xs" style="color:#78350F;">"Documentation speed" has been flagged in 6 out of your last 8 feedback episodes. Consider prioritising this goal.</div>
+            </div>
+            <a href="pages/goals.html" class="btn btn-sm btn-warning"><i class="ri-arrow-right-line"></i> View Goal</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ CE DASHBOARD ============ -->
+      <div data-visible-roles="ce">
+        <!-- CE Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="ri-mic-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">147</div>
+              <div class="stat-label">Feedback Sessions Given</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> +12 this week</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal"><i class="ri-user-heart-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">8</div>
+              <div class="stat-label">Students Supervised</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> Current rotation</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="ri-star-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">87%</div>
+              <div class="stat-label">Feedback Quality Score</div>
+              <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> R2C2 alignment</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="ri-flag-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">4</div>
+              <div class="stat-label">Students At Risk</div>
+              <div class="stat-change down"><i class="ri-error-warning-line"></i> Need attention</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CE: Students overview + Recent -->
+        <div class="grid-2 mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Students Under Supervision</div>
+                <div class="card-subtitle">Current rotation - click to view details</div>
+              </div>
+              <a href="pages/students.html" class="btn btn-sm btn-secondary"><i class="ri-arrow-right-line"></i> View All</a>
+            </div>
+            <div class="flex flex-col gap-12">
+              <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-blue">JC</div>
+                <div style="flex:1;"><div class="text-sm font-semibold">James Chen</div><div class="text-xs text-muted">GP Rotation | 24 sessions</div></div>
+                <span class="badge badge-green">On Track</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-purple">MA</div>
+                <div style="flex:1;"><div class="text-sm font-semibold">Maria Alvarez</div><div class="text-xs text-muted">Surgery | 21 sessions</div></div>
+                <span class="badge badge-green">On Track</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-orange">RJ</div>
+                <div style="flex:1;"><div class="text-sm font-semibold">Rajesh Johal</div><div class="text-xs text-muted">ED | 19 sessions</div></div>
+                <span class="badge badge-green">On Track</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-blue">TN</div>
+                <div style="flex:1;"><div class="text-sm font-semibold">Thomas Nguyen</div><div class="text-xs text-muted">Paeds | 15 sessions</div></div>
+                <span class="badge badge-red">At Risk</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CE: Recent feedback given -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Recent Feedback Given</div>
+                <div class="card-subtitle">Latest sessions (patient initials)</div>
+              </div>
+              <a href="pages/record.html" class="btn btn-sm btn-primary"><i class="ri-add-line"></i> New</a>
+            </div>
+            <div class="flex flex-col gap-12">
+              <div class="flex gap-12 items-center" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-blue">JC</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">James Chen - Patient P.T.</div>
+                  <div class="text-xs text-muted">Excellent nutrition assessment, improve documentation</div>
+                </div>
+                <span class="badge badge-green">Transcribed</span>
+              </div>
+              <div class="flex gap-12 items-center" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-purple">MA</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">Maria Alvarez - Patient D.H.</div>
+                  <div class="text-xs text-muted">Strong clinical reasoning, present cases more concisely</div>
+                </div>
+                <span class="badge badge-green">Transcribed</span>
+              </div>
+              <div class="flex gap-12 items-center" style="background:var(--bg); padding:12px; border-radius:var(--radius); border:1px solid var(--border);">
+                <div class="avatar avatar-sm avatar-orange">RJ</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="text-sm font-semibold">Rajesh Johal - Patient A.B.</div>
+                  <div class="text-xs text-muted">Good procedural skills, more confidence in leadership</div>
+                </div>
+                <span class="badge badge-blue">Processing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CE: Quick Actions -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Quick Actions</div>
+              <div class="card-subtitle">Common educator workflows</div>
+            </div>
+          </div>
+          <div class="flex gap-16" style="flex-wrap:wrap;">
+            <a href="pages/record.html" style="flex:1; min-width:180px; background:var(--primary-light); border-radius:var(--radius); padding:16px; text-align:center; border:1px solid rgba(10,110,189,0.15); transition:all 0.2s;">
+              <div style="font-size:28px; margin-bottom:6px;"><i class="ri-mic-line" style="color:var(--primary);"></i></div>
+              <div class="text-sm font-bold" style="color:var(--primary);">Record Feedback</div>
+              <div class="text-xs text-muted mt-4">Capture verbal feedback</div>
+            </a>
+            <a href="pages/feedback-quality.html" style="flex:1; min-width:180px; background:var(--purple-light); border-radius:var(--radius); padding:16px; text-align:center; border:1px solid rgba(139,92,246,0.15); transition:all 0.2s;">
+              <div style="font-size:28px; margin-bottom:6px;"><i class="ri-bar-chart-box-line" style="color:var(--purple);"></i></div>
+              <div class="text-sm font-bold" style="color:var(--purple);">Feedback Quality</div>
+              <div class="text-xs text-muted mt-4">R2C2 analysis</div>
+            </a>
+            <a href="pages/educator.html" style="flex:1; min-width:180px; background:#E0F7F5; border-radius:var(--radius); padding:16px; text-align:center; border:1px solid rgba(0,180,166,0.15); transition:all 0.2s;">
+              <div style="font-size:28px; margin-bottom:6px;"><i class="ri-book-open-line" style="color:var(--secondary);"></i></div>
+              <div class="text-sm font-bold" style="color:var(--secondary);">CE Resources</div>
+              <div class="text-xs text-muted mt-4">R2C2 framework guides</div>
+            </a>
+            <a href="pages/ce-dashboard.html" style="flex:1; min-width:180px; background:var(--accent-light); border-radius:var(--radius); padding:16px; text-align:center; border:1px solid rgba(249,115,22,0.15); transition:all 0.2s;">
+              <div style="font-size:28px; margin-bottom:6px;"><i class="ri-dashboard-2-line" style="color:var(--accent);"></i></div>
+              <div class="text-sm font-bold" style="color:var(--accent);">CE Dashboard</div>
+              <div class="text-xs text-muted mt-4">Longitudinal view</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ADMIN DASHBOARD ============ -->
+      <div data-visible-roles="admin">
+        <!-- Admin Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="ri-group-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">34</div>
+              <div class="stat-label">Total Students</div>
+              <div class="stat-change up">Active in programme</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal"><i class="ri-user-star-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Clinical Educators</div>
+              <div class="stat-change up">Across 6 sites</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="ri-shield-check-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">Consent Compliance</div>
+              <div class="stat-change up">All users consented</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="ri-error-warning-line"></i></div>
+            <div class="stat-body">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Pending Incidents</div>
+              <div class="stat-change down">Require review</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin: Governance Overview + Audit -->
+        <div class="grid-2 mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i class="ri-shield-check-line"></i> Governance Overview</div>
+                <div class="card-subtitle">Responsible AI compliance status</div>
+              </div>
+              <a href="pages/admin.html" class="btn btn-sm btn-primary"><i class="ri-arrow-right-line"></i> Full Panel</a>
+            </div>
+            <div class="flex flex-col gap-12">
+              <div class="flex items-center gap-12" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm" style="flex:1;">User Consent Controls</span>
+                <span class="badge badge-green">Active</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm" style="flex:1;">Access Permissions</span>
+                <span class="badge badge-green">Enforced</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm" style="flex:1;">Audit Trail Logging</span>
+                <span class="badge badge-green">Recording</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm" style="flex:1;">Model Version Logging</span>
+                <span class="badge badge-green">v2.4.1</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:10px; background:var(--warning-light); border-radius:var(--radius); border:1px solid #FDE68A;">
+                <i class="ri-error-warning-fill" style="color:var(--warning);"></i>
+                <span class="text-sm" style="flex:1;">Incident Reports</span>
+                <span class="badge badge-orange">2 pending</span>
+              </div>
+              <div class="flex items-center gap-12" style="padding:10px; background:var(--success-light); border-radius:var(--radius); border:1px solid #BBF7D0;">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-sm" style="flex:1;">Data Retention Policy</span>
+                <span class="badge badge-green">Compliant</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin: Recent Audit Trail -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title"><i class="ri-history-line"></i> Recent Audit Trail</div>
+                <div class="card-subtitle">Latest system actions logged</div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-8">
+              <div class="audit-log-item">
+                <span class="audit-time">14:32</span>
+                <i class="ri-mic-line" style="color:var(--primary);"></i>
+                <span style="flex:1;">Dr Palmer recorded feedback for James Chen (Patient P.T.)</span>
+                <span class="badge badge-blue">Record</span>
+              </div>
+              <div class="audit-log-item">
+                <span class="audit-time">14:28</span>
+                <i class="ri-brain-line" style="color:var(--purple);"></i>
+                <span style="flex:1;">AI generated feedback summary - auto de-identified</span>
+                <span class="badge badge-purple">AI</span>
+              </div>
+              <div class="audit-log-item">
+                <span class="audit-time">14:15</span>
+                <i class="ri-edit-line" style="color:var(--accent);"></i>
+                <span style="flex:1;">James Chen edited transcript section (correction logged)</span>
+                <span class="badge badge-orange">Edit</span>
+              </div>
+              <div class="audit-log-item">
+                <span class="audit-time">13:50</span>
+                <i class="ri-shield-check-line" style="color:var(--success);"></i>
+                <span style="flex:1;">Human verification completed by Dr Palmer</span>
+                <span class="badge badge-green">Verified</span>
+              </div>
+              <div class="audit-log-item">
+                <span class="audit-time">13:22</span>
+                <i class="ri-error-warning-line" style="color:var(--warning);"></i>
+                <span style="flex:1;">Suspected hallucination flagged in summary for review</span>
+                <span class="badge badge-orange">Flag</span>
+              </div>
+              <div class="audit-log-item">
+                <span class="audit-time">12:45</span>
+                <i class="ri-user-add-line" style="color:var(--secondary);"></i>
+                <span style="flex:1;">New user consent recorded: Sophie Clarke</span>
+                <span class="badge badge-teal">Consent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin: All Users Overview -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="ri-team-line"></i> All Users</div>
+              <div class="card-subtitle">Complete system user list</div>
+            </div>
+            <div class="flex gap-8">
+              <input type="text" class="form-control" style="width:180px; padding:6px 12px; font-size:0.8rem;" placeholder="Search users...">
+              <button class="btn btn-sm btn-primary"><i class="ri-add-line"></i> Add User</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">User</th>
+                  <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">Role</th>
+                  <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">Status</th>
+                  <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">Consent</th>
+                  <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">Last Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;"><div class="flex items-center gap-8"><div class="avatar avatar-sm avatar-blue">JC</div> James Chen</div></td><td style="padding:10px;"><span class="badge badge-blue">Student</span></td><td style="padding:10px;"><span class="badge badge-green">Active</span></td><td style="padding:10px;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td><td style="padding:10px;">Today</td></tr>
+                <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;"><div class="flex items-center gap-8"><div class="avatar avatar-sm avatar-green">SP</div> Dr Sarah Palmer</div></td><td style="padding:10px;"><span class="badge badge-teal">CE</span></td><td style="padding:10px;"><span class="badge badge-green">Active</span></td><td style="padding:10px;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td><td style="padding:10px;">Today</td></tr>
+                <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;"><div class="flex items-center gap-8"><div class="avatar avatar-sm avatar-purple">MA</div> Maria Alvarez</div></td><td style="padding:10px;"><span class="badge badge-blue">Student</span></td><td style="padding:10px;"><span class="badge badge-green">Active</span></td><td style="padding:10px;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td><td style="padding:10px;">Yesterday</td></tr>
+                <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;"><div class="flex items-center gap-8"><div class="avatar avatar-sm avatar-purple">MT</div> Prof Michael Torres</div></td><td style="padding:10px;"><span class="badge badge-purple">Admin</span></td><td style="padding:10px;"><span class="badge badge-green">Active</span></td><td style="padding:10px;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td><td style="padding:10px;">Today</td></tr>
+                <tr><td style="padding:10px;"><div class="flex items-center gap-8"><div class="avatar avatar-sm avatar-blue">TN</div> Thomas Nguyen</div></td><td style="padding:10px;"><span class="badge badge-blue">Student</span></td><td style="padding:10px;"><span class="badge badge-red">At Risk</span></td><td style="padding:10px;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td><td style="padding:10px;">3 days ago</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <script src="js/app.js"></script>
+  <script>
+  // --- Download Project as ZIP ---
+  async function downloadProject() {
+    const btn = document.getElementById('downloadBtn');
+    btn.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Packaging...';
+    btn.disabled = true;
+
+    try {
+      const zip = new JSZip();
+      const folder = zip.folder('clinicalfeedback');
+
+      // Define all project files to include
+      const files = [
+        { path: 'index.html', url: 'index.html' },
+        { path: 'css/main.css', url: 'css/main.css' },
+        { path: 'css/charts.css', url: 'css/charts.css' },
+        { path: 'js/app.js', url: 'js/app.js' },
+        { path: 'js/recording.js', url: 'js/recording.js' },
+        { path: 'js/analysis.js', url: 'js/analysis.js' },
+        { path: 'pages/record.html', url: 'pages/record.html' },
+        { path: 'pages/analysis.html', url: 'pages/analysis.html' },
+        { path: 'pages/progress.html', url: 'pages/progress.html' },
+        { path: 'pages/goals.html', url: 'pages/goals.html' },
+        { path: 'pages/educator.html', url: 'pages/educator.html' },
+        { path: 'pages/feedback-quality.html', url: 'pages/feedback-quality.html' },
+        { path: 'pages/ce-dashboard.html', url: 'pages/ce-dashboard.html' },
+        { path: 'pages/students.html', url: 'pages/students.html' },
+        { path: 'pages/admin.html', url: 'pages/admin.html' },
+      ];
+
+      // Fetch each file and add to zip
+      for (const file of files) {
+        try {
+          const response = await fetch(file.url);
+          const text = await response.text();
+          folder.file(file.path, text);
+        } catch (e) {
+          console.warn('Could not fetch: ' + file.url);
+        }
+      }
+
+      // Generate and download
+      const content = await zip.generateAsync({ type: 'blob' });
+      saveAs(content, 'CliniQ-ClinicalFeedback.zip');
+      showNotification('Project downloaded as CliniQ-ClinicalFeedback.zip', 'success');
+    } catch (e) {
+      showNotification('Download failed - try right-click Save As on this page instead', 'error');
+      console.error(e);
+    } finally {
+      btn.innerHTML = '<i class="ri-download-line"></i> Download Project';
+      btn.disabled = false;
+    }
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Summary - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+
+  <!-- Role Switcher -->
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item active" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-brain-line"></i> Feedback Summary</h2>
+        <p>AI-generated summary with confirm/edit/reject controls</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm btn-primary"><i class="ri-refresh-line"></i> Re-generate</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Session Info Bar -->
+      <div class="card mb-24" style="padding:16px 24px;">
+        <div class="flex items-center justify-between" style="flex-wrap:wrap; gap:12px;">
+          <div class="flex items-center gap-12">
+            <div class="avatar avatar-md avatar-blue">PT</div>
+            <div>
+              <div class="font-bold">Patient P.T. - Outpatient Clinic</div>
+              <div class="text-xs text-muted">James Chen | CE: Dr Sarah Palmer | 4 Aug 2026 | 2 min 34 sec</div>
+            </div>
+          </div>
+          <div class="flex gap-8">
+            <span class="badge badge-green"><i class="ri-shield-check-line"></i> De-identified</span>
+            <span class="badge badge-purple"><i class="ri-sparkling-line"></i> AI Generated</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Summary Sections with Confirm/Edit/Reject -->
+      
+      <!-- 1. Strengths -->
+      <div class="card mb-24 summary-action-card" style="border-left: 4px solid var(--success);">
+        <div class="card-header">
+          <div>
+            <div class="card-title" style="color:var(--success);"><i class="ri-thumb-up-line"></i> Strengths</div>
+            <div class="card-subtitle">Performance evidence supporting identified strengths</div>
+          </div>
+          <div class="action-status"><span class="badge badge-gray">Pending Review</span></div>
+        </div>
+        <div class="editable-section">
+          <div class="edit-btn-float" onclick="toggleEdit(this)"><i class="ri-edit-line"></i></div>
+          <div class="editable-content" style="background:var(--bg); padding:16px; border-radius:var(--radius); border:1px solid var(--border); font-size:0.85rem; line-height:1.8; color:var(--text-secondary);">
+            <ul style="list-style:disc; padding-left:20px;">
+              <li><strong>Thorough nutrition assessment:</strong> Completed comprehensive SGA tool systematically, identifying all relevant nutritional deficiencies within appropriate timeframe.</li>
+              <li><strong>Empathetic patient communication:</strong> Demonstrated excellent rapport with patient P.T., using open-ended questions and active listening throughout the consultation.</li>
+              <li><strong>Clinical reasoning:</strong> Correctly identified malnutrition risk factors and developed appropriate differential considerations for the nutritional diagnosis.</li>
+              <li><strong>Patient-centred goal setting:</strong> Collaboratively established nutrition goals with the patient, considering their preferences and lifestyle constraints.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex gap-8 mt-16">
+          <button class="btn btn-sm btn-success" onclick="confirmSection(this)"><i class="ri-checkbox-circle-line"></i> Confirm</button>
+          <button class="btn btn-sm btn-secondary" onclick="toggleEdit(this.closest('.card').querySelector('.edit-btn-float'))"><i class="ri-edit-line"></i> Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectSection(this)"><i class="ri-close-circle-line"></i> Reject</button>
+        </div>
+      </div>
+
+      <!-- 2. Areas for Improvement -->
+      <div class="card mb-24 summary-action-card" style="border-left: 4px solid var(--accent);">
+        <div class="card-header">
+          <div>
+            <div class="card-title" style="color:var(--accent);"><i class="ri-arrow-up-circle-line"></i> Areas for Improvement</div>
+            <div class="card-subtitle">Performance evidence supporting development areas</div>
+          </div>
+          <div class="action-status"><span class="badge badge-gray">Pending Review</span></div>
+        </div>
+        <div class="editable-section">
+          <div class="edit-btn-float" onclick="toggleEdit(this)"><i class="ri-edit-line"></i></div>
+          <div class="editable-content" style="background:var(--bg); padding:16px; border-radius:var(--radius); border:1px solid var(--border); font-size:0.85rem; line-height:1.8; color:var(--text-secondary);">
+            <ul style="list-style:disc; padding-left:20px;">
+              <li><strong>Documentation speed:</strong> Clinical notes took approximately 25 minutes to complete post-consultation. Target is 15 minutes using SOAP format. Accuracy was good but efficiency needs improvement.</li>
+              <li><strong>Time management:</strong> Consultation extended 10 minutes beyond allocated slot due to incomplete preparation of patient history review beforehand.</li>
+              <li><strong>Follow-up planning:</strong> Nutrition care plan lacked specific measurable outcomes and timeline for reassessment. Consider using SMART goal framework for patient plans.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex gap-8 mt-16">
+          <button class="btn btn-sm btn-success" onclick="confirmSection(this)"><i class="ri-checkbox-circle-line"></i> Confirm</button>
+          <button class="btn btn-sm btn-secondary" onclick="toggleEdit(this.closest('.card').querySelector('.edit-btn-float'))"><i class="ri-edit-line"></i> Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectSection(this)"><i class="ri-close-circle-line"></i> Reject</button>
+        </div>
+      </div>
+
+      <!-- 3. Agreed Learning Goals -->
+      <div class="card mb-24 summary-action-card" style="border-left: 4px solid var(--primary);">
+        <div class="card-header">
+          <div>
+            <div class="card-title" style="color:var(--primary);"><i class="ri-focus-3-line"></i> Agreed Learning Goals</div>
+            <div class="card-subtitle">Goals established during the feedback conversation</div>
+          </div>
+          <div class="action-status"><span class="badge badge-gray">Pending Review</span></div>
+        </div>
+        <div class="editable-section">
+          <div class="edit-btn-float" onclick="toggleEdit(this)"><i class="ri-edit-line"></i></div>
+          <div class="editable-content" style="background:var(--bg); padding:16px; border-radius:var(--radius); border:1px solid var(--border); font-size:0.85rem; line-height:1.8; color:var(--text-secondary);">
+            <ol style="padding-left:20px;">
+              <li><strong>Improve documentation efficiency:</strong> Complete clinical notes within 15 minutes of patient encounters using structured SOAP format templates.</li>
+              <li><strong>Pre-consultation preparation:</strong> Review patient history and relevant lab results before each scheduled consultation to optimise time management.</li>
+              <li><strong>SMART care planning:</strong> Include specific, measurable outcomes with defined reassessment timelines in all nutrition care plans.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="flex gap-8 mt-16">
+          <button class="btn btn-sm btn-success" onclick="confirmSection(this)"><i class="ri-checkbox-circle-line"></i> Confirm</button>
+          <button class="btn btn-sm btn-secondary" onclick="toggleEdit(this.closest('.card').querySelector('.edit-btn-float'))"><i class="ri-edit-line"></i> Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectSection(this)"><i class="ri-close-circle-line"></i> Reject</button>
+        </div>
+      </div>
+
+      <!-- 4. Proposed Actions -->
+      <div class="card mb-24 summary-action-card" style="border-left: 4px solid var(--purple);">
+        <div class="card-header">
+          <div>
+            <div class="card-title" style="color:var(--purple);"><i class="ri-list-check-2"></i> Proposed Actions & Follow-Up Plan</div>
+            <div class="card-subtitle">Concrete steps and follow-up arrangements</div>
+          </div>
+          <div class="action-status"><span class="badge badge-gray">Pending Review</span></div>
+        </div>
+        <div class="editable-section">
+          <div class="edit-btn-float" onclick="toggleEdit(this)"><i class="ri-edit-line"></i></div>
+          <div class="editable-content" style="background:var(--bg); padding:16px; border-radius:var(--radius); border:1px solid var(--border); font-size:0.85rem; line-height:1.8; color:var(--text-secondary);">
+            <p><strong>Actions:</strong></p>
+            <ul style="list-style:disc; padding-left:20px; margin-bottom:12px;">
+              <li>Practice using SOAP note templates during next 5 patient encounters (target: complete within 15 min)</li>
+              <li>Prepare patient history summary 10 minutes before each scheduled consultation</li>
+              <li>Use the department SMART goal template for all nutrition care plans this week</li>
+              <li>Seek feedback from nursing staff on documentation clarity</li>
+            </ul>
+            <p><strong>Follow-Up Plan:</strong></p>
+            <ul style="list-style:disc; padding-left:20px;">
+              <li>Review progress at next supervision meeting (11 Aug 2026)</li>
+              <li>Dr Palmer to observe one consultation mid-week for time management</li>
+              <li>Student to self-assess documentation times and report back</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex gap-8 mt-16">
+          <button class="btn btn-sm btn-success" onclick="confirmSection(this)"><i class="ri-checkbox-circle-line"></i> Confirm</button>
+          <button class="btn btn-sm btn-secondary" onclick="toggleEdit(this.closest('.card').querySelector('.edit-btn-float'))"><i class="ri-edit-line"></i> Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectSection(this)"><i class="ri-close-circle-line"></i> Reject</button>
+        </div>
+      </div>
+
+      <!-- 5. Competency Mapping -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-map-pin-line"></i> Competency Mapping</div>
+            <div class="card-subtitle">This feedback mapped to Dietetic EPAs</div>
+          </div>
+          <span class="badge badge-teal">Auto-mapped</span>
+        </div>
+        <div class="flex flex-col gap-12">
+          <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <span class="text-sm font-semibold">Medical Nutrition Therapy</span>
+              <span class="badge badge-blue">Strong evidence</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar blue" style="width:88%"></div></div>
+            <div class="text-xs text-muted mt-4">Matched: nutrition assessment, SGA tool, malnutrition risk identification</div>
+          </div>
+          <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <span class="text-sm font-semibold">Communication</span>
+              <span class="badge badge-green">Strong evidence</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar green" style="width:85%"></div></div>
+            <div class="text-xs text-muted mt-4">Matched: patient rapport, empathetic communication, goal setting</div>
+          </div>
+          <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <span class="text-sm font-semibold">Professional Practice</span>
+              <span class="badge badge-orange">Development needed</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar orange" style="width:62%"></div></div>
+            <div class="text-xs text-muted mt-4">Matched: documentation speed, time management, follow-up planning</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Original Transcript (editable) -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-file-text-line"></i> Original Transcript</div>
+            <div class="card-subtitle">De-identified transcript - students and admins can edit</div>
+          </div>
+          <span class="badge badge-green"><i class="ri-shield-check-line"></i> De-identified</span>
+        </div>
+        <div class="editable-section">
+          <div class="edit-btn-float" onclick="toggleEdit(this)"><i class="ri-edit-line"></i></div>
+          <div class="editable-content" style="background:var(--bg); padding:16px; border-radius:var(--radius); border:1px solid var(--border); font-size:0.85rem; line-height:2; color:var(--text-secondary);">
+            <p><strong>[CE - Dr Palmer]:</strong> James, let's go through your session with the patient today.</p>
+            <p><strong>[Student - James]:</strong> Yes, so Patient [REDACTED] presented with malnutrition risk. I completed the nutrition assessment using the SGA tool.</p>
+            <p><strong>[CE - Dr Palmer]:</strong> Good. Your assessment technique was thorough and methodical. You identified the key nutritional deficiencies quickly.</p>
+            <p><strong>[CE - Dr Palmer]:</strong> One area to work on is documentation speed - your notes were accurate but took longer than expected.</p>
+            <p><strong>[Student - James]:</strong> I agree, I'll work on using the SOAP format more efficiently.</p>
+            <p><strong>[CE - Dr Palmer]:</strong> Also, your communication with the patient was excellent - very empathetic. Keep that up.</p>
+            <p><strong>[CE - Dr Palmer]:</strong> Let's set a goal around documentation efficiency for next week. Overall a strong performance.</p>
+          </div>
+        </div>
+        <div class="flex justify-between items-center mt-12">
+          <div class="text-xs text-muted">128 words | Confidence: 95% | Speakers: 2 detected</div>
+          <button class="btn btn-sm btn-secondary" onclick="toggleEdit(this.closest('.card').querySelector('.edit-btn-float'))"><i class="ri-edit-line"></i> Edit Transcript</button>
+        </div>
+      </div>
+
+      <!-- Human Verification Notice -->
+      <div class="card" style="border:1px solid var(--secondary); background:rgba(0,180,166,0.04);">
+        <div class="flex items-center gap-12">
+          <div style="width:44px; height:44px; background:#E0F7F5; border-radius:var(--radius); display:flex; align-items:center; justify-content:center;">
+            <i class="ri-user-follow-line" style="font-size:20px; color:var(--secondary);"></i>
+          </div>
+          <div style="flex:1;">
+            <div class="text-sm font-bold" style="color:var(--secondary-dark);">Human Verification Required</div>
+            <div class="text-xs text-secondary">This AI-generated summary requires confirmation from both the student and CE before being finalised. Please review each section and confirm, edit, or reject as appropriate.</div>
+          </div>
+          <button class="btn btn-sm btn-teal" onclick="showNotification('All confirmed sections will be saved to the competency record','success')"><i class="ri-check-double-line"></i> Submit All</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+  <script src="../js/analysis.js"></script>
+</body>
+</html>

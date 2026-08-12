@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Quality - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item active" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-bar-chart-box-line"></i> Feedback Quality Report</h2>
+        <p>AI analysis of your feedback against the R2C2 framework (Ramani et al., 2025)</p>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Overall Quality Score -->
+      <div class="card mb-24" style="background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border:none;">
+        <div class="flex items-center justify-between" style="flex-wrap:wrap; gap:16px;">
+          <div>
+            <h3 style="color:#fff; font-size:1.1rem; font-weight:700;">Your Feedback Quality Score</h3>
+            <p style="color:rgba(255,255,255,0.8); font-size:0.85rem;">Based on R2C2 component analysis across your last 20 feedback sessions</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.2); padding:16px 24px; border-radius:var(--radius-lg); text-align:center;">
+            <div style="font-size:2rem; font-weight:800; color:#fff;">87%</div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.8);">R2C2 Alignment</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- R2C2 Component Breakdown -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title">R2C2 Component Analysis</div>
+            <div class="card-subtitle">How well each feedback conversation covers R2C2 framework elements</div>
+          </div>
+          <span class="badge badge-teal"><i class="ri-brain-line"></i> AI Analysed</span>
+        </div>
+        <div class="flex flex-col gap-16">
+          <!-- R1: Relationship -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div class="r2c2-number" style="background:var(--primary-light); color:var(--primary); width:28px; height:28px; font-size:0.7rem;">R1</div>
+                <span class="text-sm font-semibold">Relationship Building</span>
+              </div>
+              <span class="badge badge-green">92%</span>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar blue" style="width:92%"></div></div>
+            <div class="text-xs text-muted">Strong: You consistently establish rapport before giving feedback. Detected in 18/20 sessions.</div>
+          </div>
+          <!-- R2: Reaction -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div class="r2c2-number" style="background:var(--purple-light); color:var(--purple); width:28px; height:28px; font-size:0.7rem;">R2</div>
+                <span class="text-sm font-semibold">Exploring Reactions</span>
+              </div>
+              <span class="badge badge-green">85%</span>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar purple" style="width:85%"></div></div>
+            <div class="text-xs text-muted">Good: You invite learner self-assessment in most sessions. Opportunity to ask more open-ended reflection questions.</div>
+          </div>
+          <!-- C1: Content -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div class="r2c2-number" style="background:var(--success-light); color:var(--success); width:28px; height:28px; font-size:0.7rem;">C1</div>
+                <span class="text-sm font-semibold">Exploring Content</span>
+              </div>
+              <span class="badge badge-green">90%</span>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar green" style="width:90%"></div></div>
+            <div class="text-xs text-muted">Excellent: You provide specific, evidence-based observations. Good balance of strengths and development areas.</div>
+          </div>
+          <!-- C2: Coaching -->
+          <div style="padding:16px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-8">
+                <div class="r2c2-number" style="background:var(--accent-light); color:var(--accent); width:28px; height:28px; font-size:0.7rem;">C2</div>
+                <span class="text-sm font-semibold">Coaching for Change</span>
+              </div>
+              <span class="badge badge-orange">76%</span>
+            </div>
+            <div class="progress-bar-wrap mb-8"><div class="progress-bar orange" style="width:76%"></div></div>
+            <div class="text-xs text-muted">Developing: Action plans present in 15/20 sessions, but specificity could improve. Consider using SMART goals more consistently.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Individual Session Analysis -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Session-by-Session Quality</div>
+            <div class="card-subtitle">R2C2 component presence in recent feedback conversations</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th style="padding:10px; text-align:left; color:var(--text-muted); font-weight:600;">Session</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">R1 Rapport</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">R2 Reaction</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">C1 Content</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">C2 Coaching</th>
+                <th style="padding:10px; text-align:center; color:var(--text-muted); font-weight:600;">Overall</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:10px; font-weight:600;">James Chen - P.T. (4 Aug)</td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><span class="badge badge-green">95%</span></td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:10px; font-weight:600;">Maria Alvarez - D.H. (2 Aug)</td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-close-circle-fill" style="color:var(--danger);"></i></td>
+                <td style="padding:10px; text-align:center;"><span class="badge badge-orange">78%</span></td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:10px; font-weight:600;">Rajesh Johal - A.B. (1 Aug)</td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-close-circle-fill" style="color:var(--danger);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><span class="badge badge-blue">82%</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px; font-weight:600;">Thomas Nguyen - K.L. (30 Jul)</td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-checkbox-circle-fill" style="color:var(--success);"></i></td>
+                <td style="padding:10px; text-align:center;"><i class="ri-close-circle-fill" style="color:var(--danger);"></i></td>
+                <td style="padding:10px; text-align:center;"><span class="badge badge-orange">75%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-lightbulb-line"></i> AI Recommendations for Improvement</div>
+            <div class="card-subtitle">Personalised suggestions based on your feedback patterns</div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12">
+          <div style="padding:14px; background:var(--accent-light); border-radius:var(--radius); border:1px solid #FED7AA;">
+            <div class="flex items-center gap-8 mb-8">
+              <i class="ri-arrow-up-circle-line" style="color:var(--accent);"></i>
+              <span class="text-sm font-semibold" style="color:#C2410C;">Strengthen Coaching Component</span>
+            </div>
+            <p class="text-xs text-secondary">In 5/20 sessions, the coaching phase lacked specific, measurable action items. Try ending each session with "What specific step will you take this week?" and agree on a follow-up date.</p>
+          </div>
+          <div style="padding:14px; background:var(--primary-light); border-radius:var(--radius); border:1px solid rgba(10,110,189,0.15);">
+            <div class="flex items-center gap-8 mb-8">
+              <i class="ri-lightbulb-line" style="color:var(--primary);"></i>
+              <span class="text-sm font-semibold" style="color:var(--primary);">Explore Reactions More Deeply</span>
+            </div>
+            <p class="text-xs text-secondary">Consider adding follow-up questions when learners self-assess. Instead of moving on after "It went okay," try "What specifically went well?" to deepen reflection.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>

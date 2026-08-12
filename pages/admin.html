@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Governance - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item active" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-shield-check-line"></i> Responsible AI Governance</h2>
+        <p>User consent, access control, audit trails, and AI safety controls</p>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Governance Controls Grid -->
+      <div class="grid-3 mb-24">
+        <!-- 1. User Consent Controls -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--success-light);"><i class="ri-user-settings-line" style="color:var(--success);"></i></div>
+          <div class="font-bold text-sm mb-4">User Consent Controls</div>
+          <p class="text-xs text-secondary mb-12">All users must provide informed consent before data collection. Consent can be withdrawn at any time.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-checkbox-circle-line"></i> 46/46 consented</span>
+          </div>
+        </div>
+        <!-- 2. Access Permissions -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--primary-light);"><i class="ri-lock-line" style="color:var(--primary);"></i></div>
+          <div class="font-bold text-sm mb-4">Access Permissions</div>
+          <p class="text-xs text-secondary mb-12">Role-based access control ensures users only see data they're authorised to view. Students see own data only.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-shield-check-line"></i> RBAC Enforced</span>
+          </div>
+        </div>
+        <!-- 3. Audit Trails -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--purple-light);"><i class="ri-history-line" style="color:var(--purple);"></i></div>
+          <div class="font-bold text-sm mb-4">Audit Trails</div>
+          <p class="text-xs text-secondary mb-12">Every action is logged with timestamp, user, and action type. Immutable audit log for accountability.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-checkbox-circle-line"></i> 2,847 entries</span>
+          </div>
+        </div>
+        <!-- 4. Correction Mechanisms -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--accent-light);"><i class="ri-edit-circle-line" style="color:var(--accent);"></i></div>
+          <div class="font-bold text-sm mb-4">Correction Mechanisms</div>
+          <p class="text-xs text-secondary mb-12">Students and admins can edit AI-generated content. All corrections are logged with original + revised versions.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-checkbox-circle-line"></i> Active</span>
+          </div>
+        </div>
+        <!-- 5. Incident Reporting -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--danger-light);"><i class="ri-alarm-warning-line" style="color:var(--danger);"></i></div>
+          <div class="font-bold text-sm mb-4">Incident Reporting</div>
+          <p class="text-xs text-secondary mb-12">Report AI errors, inappropriate outputs, or safety concerns. All incidents reviewed within 24 hours.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-orange"><i class="ri-error-warning-line"></i> 2 pending</span>
+          </div>
+        </div>
+        <!-- 6. Model Version Logging -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:#E0F7F5;"><i class="ri-git-branch-line" style="color:var(--secondary);"></i></div>
+          <div class="font-bold text-sm mb-4">Model Version Logging</div>
+          <p class="text-xs text-secondary mb-12">All AI model versions are tracked. Each output is tagged with the model version used for reproducibility.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-teal"><i class="ri-git-commit-line"></i> v2.4.1</span>
+          </div>
+        </div>
+        <!-- 7. Data Retention Rules -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--warning-light);"><i class="ri-database-2-line" style="color:var(--warning);"></i></div>
+          <div class="font-bold text-sm mb-4">Data Retention Rules</div>
+          <p class="text-xs text-secondary mb-12">Audio deleted after transcription (max 7 days). Transcripts retained for academic year + 1. De-identified data only.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-checkbox-circle-line"></i> Compliant</span>
+          </div>
+        </div>
+        <!-- 8. Human Verification -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--primary-light);"><i class="ri-user-follow-line" style="color:var(--primary);"></i></div>
+          <div class="font-bold text-sm mb-4">Human Verification</div>
+          <p class="text-xs text-secondary mb-12">All AI-generated summaries require human confirmation before being added to student records. No auto-publish.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-checkbox-circle-line"></i> Required</span>
+          </div>
+        </div>
+        <!-- 9. Hallucination Procedures -->
+        <div class="governance-card">
+          <div class="governance-icon" style="background:var(--purple-light);"><i class="ri-ghost-line" style="color:var(--purple);"></i></div>
+          <div class="font-bold text-sm mb-4">Hallucination Procedures</div>
+          <p class="text-xs text-secondary mb-12">Suspected AI hallucinations can be flagged by any user. Flagged content is quarantined and reviewed by admin.</p>
+          <div class="flex items-center gap-8">
+            <span class="badge badge-green"><i class="ri-checkbox-circle-line"></i> Protocol Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit Trail Log -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-history-line"></i> Full Audit Trail</div>
+            <div class="card-subtitle">Complete log of system actions with timestamps</div>
+          </div>
+          <div class="flex gap-8">
+            <select class="form-control" style="width:auto; padding:6px 12px; font-size:0.8rem;">
+              <option>All Actions</option>
+              <option>Recording</option>
+              <option>AI Generation</option>
+              <option>Edits</option>
+              <option>Verification</option>
+              <option>Incidents</option>
+            </select>
+            <button class="btn btn-sm btn-secondary"><i class="ri-download-line"></i> Export</button>
+          </div>
+        </div>
+        <div class="flex flex-col gap-8">
+          <div class="audit-log-item">
+            <span class="audit-time">14:32</span>
+            <i class="ri-mic-line" style="color:var(--primary);"></i>
+            <span style="flex:1;">Dr Palmer recorded feedback for James Chen (Patient P.T.) - 2m34s</span>
+            <span class="badge badge-blue">Record</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">14:35</span>
+            <i class="ri-brain-line" style="color:var(--purple);"></i>
+            <span style="flex:1;">AI model v2.4.1 generated feedback summary - patient identifiers auto-removed</span>
+            <span class="badge badge-purple">AI Gen</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">14:38</span>
+            <i class="ri-edit-line" style="color:var(--accent);"></i>
+            <span style="flex:1;">James Chen edited transcript line 4 (correction: "SGA tool" not "SCA tool")</span>
+            <span class="badge badge-orange">Edit</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">14:42</span>
+            <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+            <span style="flex:1;">James Chen confirmed Strengths section of feedback summary</span>
+            <span class="badge badge-green">Confirm</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">14:43</span>
+            <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+            <span style="flex:1;">Dr Palmer confirmed Areas for Improvement section</span>
+            <span class="badge badge-green">Confirm</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">13:22</span>
+            <i class="ri-ghost-line" style="color:var(--warning);"></i>
+            <span style="flex:1;">Thomas Nguyen flagged suspected hallucination in summary (incorrect procedure name)</span>
+            <span class="badge badge-orange">Hallucination</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">12:15</span>
+            <i class="ri-user-add-line" style="color:var(--secondary);"></i>
+            <span style="flex:1;">New user consent recorded: Sophie Clarke (Student) - full consent provided</span>
+            <span class="badge badge-teal">Consent</span>
+          </div>
+          <div class="audit-log-item">
+            <span class="audit-time">11:30</span>
+            <i class="ri-delete-bin-line" style="color:var(--danger);"></i>
+            <span style="flex:1;">Audio file auto-deleted per retention policy (7 days elapsed) - Lena Kowalski session 28 Jul</span>
+            <span class="badge badge-red">Retention</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Incident Reports -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-alarm-warning-line"></i> Pending Incident Reports</div>
+            <div class="card-subtitle">Issues requiring admin review</div>
+          </div>
+          <span class="badge badge-red">2 pending</span>
+        </div>
+        <div class="flex flex-col gap-12">
+          <div style="padding:16px; background:var(--danger-light); border-radius:var(--radius); border:1px solid #FECACA;">
+            <div class="flex items-center gap-12 mb-8">
+              <i class="ri-ghost-line" style="font-size:20px; color:var(--danger);"></i>
+              <div style="flex:1;">
+                <div class="text-sm font-bold">Suspected Hallucination - Incorrect Procedure Name</div>
+                <div class="text-xs text-muted">Reported by Thomas Nguyen | 4 Aug 2026, 13:22</div>
+              </div>
+              <span class="badge badge-red">High Priority</span>
+            </div>
+            <p class="text-xs text-secondary mb-12">AI summary referenced "enteral feeding via nasogastric tube" but actual procedure was "parenteral nutrition via central line." Model hallucinated incorrect clinical detail.</p>
+            <div class="flex gap-8">
+              <button class="btn btn-sm btn-primary" onclick="showNotification('Incident acknowledged - content quarantined for correction','success')"><i class="ri-check-line"></i> Acknowledge</button>
+              <button class="btn btn-sm btn-secondary"><i class="ri-edit-line"></i> Correct Content</button>
+              <button class="btn btn-sm btn-secondary"><i class="ri-file-text-line"></i> View Full Report</button>
+            </div>
+          </div>
+          <div style="padding:16px; background:var(--warning-light); border-radius:var(--radius); border:1px solid #FDE68A;">
+            <div class="flex items-center gap-12 mb-8">
+              <i class="ri-error-warning-line" style="font-size:20px; color:var(--warning);"></i>
+              <div style="flex:1;">
+                <div class="text-sm font-bold">Patient Identifier Detected Post-Redaction</div>
+                <div class="text-xs text-muted">Auto-detected by system | 3 Aug 2026, 09:15</div>
+              </div>
+              <span class="badge badge-orange">Medium Priority</span>
+            </div>
+            <p class="text-xs text-secondary mb-12">Automated scan detected a possible patient surname fragment in transcript for Maria Alvarez session. Fragment auto-redacted. Verification required.</p>
+            <div class="flex gap-8">
+              <button class="btn btn-sm btn-primary" onclick="showNotification('Confirmed redaction is complete - incident resolved','success')"><i class="ri-check-line"></i> Verify Redaction</button>
+              <button class="btn btn-sm btn-secondary"><i class="ri-eye-line"></i> View Context</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Retention & Model Info -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="ri-database-2-line"></i> Data Retention Status</div>
+              <div class="card-subtitle">Current storage and scheduled deletions</div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-12">
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">Audio recordings (pending deletion)</span>
+              <span class="badge badge-orange">12 files</span>
+            </div>
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">Active transcripts</span>
+              <span class="badge badge-blue">147 records</span>
+            </div>
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">Feedback summaries</span>
+              <span class="badge badge-blue">142 reports</span>
+            </div>
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">Competency records</span>
+              <span class="badge badge-green">34 students</span>
+            </div>
+            <div class="divider"></div>
+            <div class="text-xs text-muted"><i class="ri-information-line"></i> Audio auto-deleted after 7 days. Transcripts retained for academic year + 1 year. All data de-identified.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="ri-git-branch-line"></i> AI Model Information</div>
+              <div class="card-subtitle">Current model versions and configuration</div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-12">
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">ASR Engine</span>
+              <span class="badge badge-teal">Whisper v3.1</span>
+            </div>
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">NLP / Summary Model</span>
+              <span class="badge badge-purple">GPT-4o v2.4.1</span>
+            </div>
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">De-identification Model</span>
+              <span class="badge badge-blue">MedNER v1.2</span>
+            </div>
+            <div class="flex justify-between items-center" style="padding:10px; background:var(--bg); border-radius:var(--radius);">
+              <span class="text-sm">Competency Mapper</span>
+              <span class="badge badge-green">DietEPA-Embed v1.0</span>
+            </div>
+            <div class="divider"></div>
+            <div class="text-xs text-muted"><i class="ri-information-line"></i> All model outputs tagged with version for reproducibility. Model updates require admin approval.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>

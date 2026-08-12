@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item active" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-group-line"></i> Students</h2>
+        <p>Students under your supervision - click to view competency details</p>
+      </div>
+      <div class="header-actions">
+        <input type="text" class="form-control" style="width:180px; padding:7px 12px; font-size:0.8rem;" placeholder="Search students...">
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="grid-auto stagger-children">
+
+        <div class="card animate-fade" style="cursor:pointer;" onclick="showNotification('Opening James Chen competency profile','info')">
+          <div class="flex items-center gap-12 mb-16">
+            <div class="avatar avatar-lg avatar-blue">JC</div>
+            <div>
+              <div class="font-bold">James Chen</div>
+              <div class="text-xs text-muted">Year 3 | Current: Outpatient Clinic</div>
+              <div class="flex gap-4 mt-4"><span class="badge badge-green">On Track</span></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-8"><span class="text-xs text-muted">Competency Progress</span><span class="text-xs font-bold">82%</span></div>
+          <div class="progress-bar-wrap mb-12"><div class="progress-bar blue" style="width:82%"></div></div>
+          <div class="flex justify-between text-xs text-muted">
+            <span><i class="ri-mic-line"></i> 24 sessions</span>
+            <span><i class="ri-focus-3-line"></i> 3 active goals</span>
+          </div>
+        </div>
+
+        <div class="card animate-fade" style="cursor:pointer;" onclick="showNotification('Opening Maria Alvarez competency profile','info')">
+          <div class="flex items-center gap-12 mb-16">
+            <div class="avatar avatar-lg avatar-purple">MA</div>
+            <div>
+              <div class="font-bold">Maria Alvarez</div>
+              <div class="text-xs text-muted">Year 3 | Current: Surgery Ward</div>
+              <div class="flex gap-4 mt-4"><span class="badge badge-green">On Track</span></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-8"><span class="text-xs text-muted">Competency Progress</span><span class="text-xs font-bold">79%</span></div>
+          <div class="progress-bar-wrap mb-12"><div class="progress-bar purple" style="width:79%"></div></div>
+          <div class="flex justify-between text-xs text-muted">
+            <span><i class="ri-mic-line"></i> 21 sessions</span>
+            <span><i class="ri-focus-3-line"></i> 2 active goals</span>
+          </div>
+        </div>
+
+        <div class="card animate-fade" style="cursor:pointer;" onclick="showNotification('Opening Rajesh Johal competency profile','info')">
+          <div class="flex items-center gap-12 mb-16">
+            <div class="avatar avatar-lg avatar-orange">RJ</div>
+            <div>
+              <div class="font-bold">Rajesh Johal</div>
+              <div class="text-xs text-muted">Year 3 | Current: ED</div>
+              <div class="flex gap-4 mt-4"><span class="badge badge-green">On Track</span></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-8"><span class="text-xs text-muted">Competency Progress</span><span class="text-xs font-bold">74%</span></div>
+          <div class="progress-bar-wrap mb-12"><div class="progress-bar orange" style="width:74%"></div></div>
+          <div class="flex justify-between text-xs text-muted">
+            <span><i class="ri-mic-line"></i> 19 sessions</span>
+            <span><i class="ri-focus-3-line"></i> 4 active goals</span>
+          </div>
+        </div>
+
+        <div class="card animate-fade" style="cursor:pointer;" onclick="showNotification('Opening Lena Kowalski competency profile','info')">
+          <div class="flex items-center gap-12 mb-16">
+            <div class="avatar avatar-lg avatar-green">LK</div>
+            <div>
+              <div class="font-bold">Lena Kowalski</div>
+              <div class="text-xs text-muted">Year 3 | Current: ICU</div>
+              <div class="flex gap-4 mt-4"><span class="badge badge-green">On Track</span></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-8"><span class="text-xs text-muted">Competency Progress</span><span class="text-xs font-bold">80%</span></div>
+          <div class="progress-bar-wrap mb-12"><div class="progress-bar green" style="width:80%"></div></div>
+          <div class="flex justify-between text-xs text-muted">
+            <span><i class="ri-mic-line"></i> 22 sessions</span>
+            <span><i class="ri-focus-3-line"></i> 2 active goals</span>
+          </div>
+        </div>
+
+        <div class="card animate-fade" style="cursor:pointer; border-color:var(--danger);" onclick="showNotification('Opening Thomas Nguyen - At Risk student profile','info')">
+          <div class="flex items-center gap-12 mb-16">
+            <div class="avatar avatar-lg avatar-blue">TN</div>
+            <div>
+              <div class="font-bold">Thomas Nguyen</div>
+              <div class="text-xs text-muted">Year 3 | Current: Paediatrics</div>
+              <div class="flex gap-4 mt-4"><span class="badge badge-red">At Risk</span></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-8"><span class="text-xs text-muted">Competency Progress</span><span class="text-xs font-bold">61%</span></div>
+          <div class="progress-bar-wrap mb-12"><div class="progress-bar red" style="width:61%"></div></div>
+          <div class="flex justify-between text-xs text-muted">
+            <span><i class="ri-mic-line"></i> 15 sessions</span>
+            <span><i class="ri-focus-3-line"></i> 5 active goals</span>
+          </div>
+        </div>
+
+        <div class="card animate-fade" style="cursor:pointer;" onclick="showNotification('Opening Aisha Hassan competency profile','info')">
+          <div class="flex items-center gap-12 mb-16">
+            <div class="avatar avatar-lg avatar-purple">AH</div>
+            <div>
+              <div class="font-bold">Aisha Hassan</div>
+              <div class="text-xs text-muted">Year 3 | Current: Community</div>
+              <div class="flex gap-4 mt-4"><span class="badge badge-orange">Monitor</span></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-8"><span class="text-xs text-muted">Competency Progress</span><span class="text-xs font-bold">67%</span></div>
+          <div class="progress-bar-wrap mb-12"><div class="progress-bar orange" style="width:67%"></div></div>
+          <div class="flex justify-between text-xs text-muted">
+            <span><i class="ri-mic-line"></i> 18 sessions</span>
+            <span><i class="ri-focus-3-line"></i> 4 active goals</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>

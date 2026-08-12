@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CE Dashboard - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item active" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-dashboard-2-line"></i> CE Longitudinal Dashboard</h2>
+        <p>Your feedback activity, summaries, and quality over time</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm btn-secondary"><i class="ri-download-line"></i> Export</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- CE Stats -->
+      <div class="stats-grid mb-24">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="ri-mic-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">147</div>
+            <div class="stat-label">Total Feedback Episodes</div>
+            <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> +12 this week</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon teal"><i class="ri-group-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">8</div>
+            <div class="stat-label">Students This Rotation</div>
+            <div class="stat-change up">Active supervision</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="ri-star-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">87%</div>
+            <div class="stat-label">Avg Quality Score</div>
+            <div class="stat-change up"><i class="ri-arrow-up-s-line"></i> +3% this month</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="ri-time-line"></i></div>
+          <div class="stat-body">
+            <div class="stat-value">3.2h</div>
+            <div class="stat-label">Time Saved</div>
+            <div class="stat-change up">Per student per semester</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Volume per Student -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Feedback Episodes per Student</div>
+              <div class="card-subtitle">Weekly/monthly breakdown</div>
+            </div>
+          </div>
+          <div class="bar-chart" style="height:160px;">
+            <div class="bar-col">
+              <div class="bar-value">24</div>
+              <div class="bar" style="height:80%; background:linear-gradient(to top, var(--primary), #60A5FA);"></div>
+              <div class="bar-label">James C.</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-value">21</div>
+              <div class="bar" style="height:70%; background:linear-gradient(to top, var(--purple), #A78BFA);"></div>
+              <div class="bar-label">Maria A.</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-value">19</div>
+              <div class="bar" style="height:63%; background:linear-gradient(to top, var(--accent), #FDBA74);"></div>
+              <div class="bar-label">Rajesh J.</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-value">22</div>
+              <div class="bar" style="height:73%; background:linear-gradient(to top, var(--success), #86EFAC);"></div>
+              <div class="bar-label">Lena K.</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-value">15</div>
+              <div class="bar" style="height:50%; background:linear-gradient(to top, var(--danger), #FCA5A5);"></div>
+              <div class="bar-label">Thomas N.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Feedback Quality Trend</div>
+              <div class="card-subtitle">R2C2 alignment over time</div>
+            </div>
+          </div>
+          <div class="line-chart-wrap" style="height:160px;">
+            <svg viewBox="0 0 500 140" preserveAspectRatio="none" style="height:140px;">
+              <line class="chart-grid-line" x1="30" y1="20" x2="480" y2="20"/>
+              <line class="chart-grid-line" x1="30" y1="70" x2="480" y2="70"/>
+              <line class="chart-grid-line" x1="30" y1="120" x2="480" y2="120"/>
+              <text class="chart-axis-label" x="5" y="24">100%</text>
+              <text class="chart-axis-label" x="5" y="74">75%</text>
+              <text class="chart-axis-label" x="5" y="124">50%</text>
+              <polyline class="chart-line" stroke="var(--secondary)" points="50,85 130,72 210,65 290,55 370,40 450,30"/>
+              <circle class="chart-dot" fill="var(--secondary)" cx="450" cy="30" r="5"/>
+            </svg>
+          </div>
+          <div class="text-xs text-muted text-center mt-8">Quality score improving consistently over 6 months</div>
+        </div>
+      </div>
+
+      <!-- Summary of Each Feedback Report -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Summary of Recent Feedback Reports</div>
+            <div class="card-subtitle">AI-generated summaries of each session</div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-12">
+          <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex items-center gap-12 mb-8">
+              <div class="avatar avatar-sm avatar-blue">JC</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">James Chen - Patient P.T. (4 Aug)</div>
+                <div class="text-xs text-muted">Outpatient Clinic | 2 min 34 sec</div>
+              </div>
+              <span class="badge badge-green">95% quality</span>
+            </div>
+            <p class="text-xs text-secondary">Thorough nutrition assessment using SGA. Excellent patient rapport. Documentation speed identified as development area. Goal set for SOAP format efficiency.</p>
+          </div>
+          <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex items-center gap-12 mb-8">
+              <div class="avatar avatar-sm avatar-purple">MA</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Maria Alvarez - Patient D.H. (2 Aug)</div>
+                <div class="text-xs text-muted">Surgery Ward | 3 min 12 sec</div>
+              </div>
+              <span class="badge badge-orange">78% quality</span>
+            </div>
+            <p class="text-xs text-secondary">Strong clinical reasoning for post-surgical nutrition plan. Good MDT communication. Coaching component needed - no specific action items agreed.</p>
+          </div>
+          <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex items-center gap-12 mb-8">
+              <div class="avatar avatar-sm avatar-orange">RJ</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Rajesh Johal - Patient A.B. (1 Aug)</div>
+                <div class="text-xs text-muted">ED | 1 min 58 sec</div>
+              </div>
+              <span class="badge badge-blue">82% quality</span>
+            </div>
+            <p class="text-xs text-secondary">Good procedural skills in enteral feeding setup. Needs more confidence in team leadership. Agreed action: lead one MDT discussion next week.</p>
+          </div>
+          <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+            <div class="flex items-center gap-12 mb-8">
+              <div class="avatar avatar-sm avatar-blue">TN</div>
+              <div style="flex:1;">
+                <div class="text-sm font-semibold">Thomas Nguyen - Patient K.L. (30 Jul)</div>
+                <div class="text-xs text-muted">Paediatrics | 4 min 05 sec</div>
+              </div>
+              <span class="badge badge-orange">75% quality</span>
+            </div>
+            <p class="text-xs text-secondary">Regression in clinical reasoning noted. Difficulty applying malnutrition screening to paediatric population. Remedial case discussions recommended.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quality Summary -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-pie-chart-line"></i> Feedback Quality Summary</div>
+            <div class="card-subtitle">Aggregate analysis of your feedback patterns</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h4 class="text-sm font-bold mb-12" style="color:var(--success);"><i class="ri-thumb-up-line"></i> Your Strengths as a CE</h4>
+            <div class="flex flex-col gap-8">
+              <div class="flex items-center gap-8" style="padding:8px; background:var(--success-light); border-radius:var(--radius-sm);">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-xs">Consistently builds rapport before feedback</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:8px; background:var(--success-light); border-radius:var(--radius-sm);">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-xs">Provides specific, observable evidence</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:8px; background:var(--success-light); border-radius:var(--radius-sm);">
+                <i class="ri-checkbox-circle-fill" style="color:var(--success);"></i>
+                <span class="text-xs">Good balance of positive and constructive</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold mb-12" style="color:var(--accent);"><i class="ri-arrow-up-circle-line"></i> Areas to Develop</h4>
+            <div class="flex flex-col gap-8">
+              <div class="flex items-center gap-8" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">
+                <i class="ri-error-warning-line" style="color:var(--accent);"></i>
+                <span class="text-xs">Include SMART action plans more consistently</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">
+                <i class="ri-error-warning-line" style="color:var(--accent);"></i>
+                <span class="text-xs">Deepen learner self-reflection questions</span>
+              </div>
+              <div class="flex items-center gap-8" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">
+                <i class="ri-error-warning-line" style="color:var(--accent);"></i>
+                <span class="text-xs">Schedule explicit follow-up dates</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>

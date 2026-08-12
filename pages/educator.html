@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CE Resources - CliniQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/charts.css">
+</head>
+<body>
+  <div class="role-switcher">
+    <span class="role-label">View as:</span>
+    <button class="role-btn active" data-role="student" onclick="switchRole('student')"><i class="ri-user-line"></i> Student</button>
+    <button class="role-btn" data-role="ce" onclick="switchRole('ce')"><i class="ri-user-star-line"></i> CE</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')"><i class="ri-shield-user-line"></i> Admin</button>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="ri-stethoscope-line" style="color:#fff"></i></div>
+      <div class="logo-text"><h1>CliniQ</h1><span>Clinical Feedback AI</span></div>
+    </div>
+    <div class="sidebar-user" onclick="openAccountPicker()" style="cursor:pointer;" title="Click to switch account">
+      <div class="user-avatar">JC</div>
+      <div class="user-info"><div class="user-name">James Chen</div><div class="user-role">Year 3 Dietetics Student</div></div>
+      <i class="ri-arrow-down-s-line" style="color:var(--sidebar-text); font-size:16px;"></i>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="../clinicalfeedback.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-dashboard-3-line"></i></span> Dashboard</a>
+      <a class="nav-item" href="record.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-mic-line"></i></span> Record Feedback</a>
+      <a class="nav-item" href="analysis.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-brain-line"></i></span> Feedback Summary</a>
+      <a class="nav-item" href="progress.html" data-roles="student,ce,admin"><span class="nav-icon"><i class="ri-line-chart-line"></i></span> Competency Report</a>
+      <a class="nav-item" href="goals.html" data-roles="student,ce"><span class="nav-icon"><i class="ri-focus-3-line"></i></span> Learning Goals</a>
+      <div class="nav-section-label" data-section-roles="ce,admin">Educator</div>
+      <a class="nav-item active" href="educator.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-book-open-line"></i></span> CE Resources</a>
+      <a class="nav-item" href="feedback-quality.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-bar-chart-box-line"></i></span> Feedback Quality</a>
+      <a class="nav-item" href="ce-dashboard.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-dashboard-2-line"></i></span> CE Dashboard</a>
+      <a class="nav-item" href="students.html" data-roles="ce,admin"><span class="nav-icon"><i class="ri-group-line"></i></span> Students</a>
+      <div class="nav-section-label" data-section-roles="admin">Administration</div>
+      <a class="nav-item" href="admin.html" data-roles="admin"><span class="nav-icon"><i class="ri-shield-check-line"></i></span> Governance</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <button class="btn-icon" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+      <div class="header-title">
+        <h2><i class="ri-book-open-line"></i> CE Resources</h2>
+        <p>Infographics and articles on giving effective clinical feedback</p>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- R2C2 Framework -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-award-line"></i> R2C2 Feedback Framework</div>
+            <div class="card-subtitle">Relationship, Reaction, Content, Coaching (Ramani et al., 2025)</div>
+          </div>
+          <span class="badge badge-teal"><i class="ri-book-2-line"></i> Evidence-Based</span>
+        </div>
+        <p class="text-sm text-secondary mb-20">The R2C2 model provides a structured approach to giving effective clinical feedback. Each feedback conversation should progress through these four phases:</p>
+
+        <div class="flex flex-col gap-16">
+          <div class="r2c2-step">
+            <div class="r2c2-number" style="background:var(--primary-light); color:var(--primary);">R1</div>
+            <div>
+              <div class="r2c2-title" style="color:var(--primary);">Relationship Building</div>
+              <div class="r2c2-desc">Establish rapport and trust. Create a safe learning environment. Ask about the learner's experience and wellbeing before diving into feedback.</div>
+            </div>
+          </div>
+          <div class="r2c2-step">
+            <div class="r2c2-number" style="background:var(--purple-light); color:var(--purple);">R2</div>
+            <div>
+              <div class="r2c2-title" style="color:var(--purple);">Exploring Reactions</div>
+              <div class="r2c2-desc">Ask the learner to self-assess first. Explore their emotional reaction. "How do you think that went?" acknowledges their perspective before sharing yours.</div>
+            </div>
+          </div>
+          <div class="r2c2-step">
+            <div class="r2c2-number" style="background:var(--success-light); color:var(--success);">C1</div>
+            <div>
+              <div class="r2c2-title" style="color:var(--success);">Exploring Content</div>
+              <div class="r2c2-desc">Share specific, observable performance evidence. Balance strengths with areas for development. Use concrete examples from the clinical encounter.</div>
+            </div>
+          </div>
+          <div class="r2c2-step">
+            <div class="r2c2-number" style="background:var(--accent-light); color:var(--accent);">C2</div>
+            <div>
+              <div class="r2c2-title" style="color:var(--accent);">Coaching for Change</div>
+              <div class="r2c2-desc">Collaboratively develop action plans. Set specific, achievable goals. Agree on follow-up and support needed. Empower the learner to drive their development.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips & Articles Grid -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="ri-lightbulb-line"></i> Quick Tips for Effective Feedback</div>
+              <div class="card-subtitle">Evidence-based strategies</div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-12">
+            <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+                <span class="text-sm font-semibold">Be Specific</span>
+              </div>
+              <p class="text-xs text-secondary">Replace "good job" with specific observable behaviours: "Your open-ended questions helped the patient disclose their dietary concerns."</p>
+            </div>
+            <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+                <span class="text-sm font-semibold">Timely Delivery</span>
+              </div>
+              <p class="text-xs text-secondary">Provide feedback as close to the event as possible. Same-day feedback is most effective for behaviour change.</p>
+            </div>
+            <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+                <span class="text-sm font-semibold">Ask Before Telling</span>
+              </div>
+              <p class="text-xs text-secondary">Invite learner self-assessment before offering your observations. This promotes reflection and shared understanding.</p>
+            </div>
+            <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+                <span class="text-sm font-semibold">Focus on Behaviour, Not Person</span>
+              </div>
+              <p class="text-xs text-secondary">Frame feedback around actions and outcomes, not personality traits. "The documentation was incomplete" vs "You're disorganised."</p>
+            </div>
+            <div style="padding:12px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-checkbox-circle-line" style="color:var(--success);"></i>
+                <span class="text-sm font-semibold">Close the Loop</span>
+              </div>
+              <p class="text-xs text-secondary">Always end with agreed actions, timelines, and a plan to check progress. Follow-up shows commitment to the learner's development.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><i class="ri-article-line"></i> Recommended Reading</div>
+              <div class="card-subtitle">Articles and resources on clinical education</div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-12">
+            <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-file-paper-2-line" style="color:var(--primary);"></i>
+                <span class="text-sm font-semibold">R2C2 in Practice: A Guide for Clinical Educators</span>
+              </div>
+              <p class="text-xs text-secondary mb-8">Ramani, S., et al. (2025). Twelve tips for giving feedback using the R2C2 model. Medical Teacher.</p>
+              <button class="btn btn-sm btn-secondary"><i class="ri-external-link-line"></i> Read Article</button>
+            </div>
+            <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-file-paper-2-line" style="color:var(--purple);"></i>
+                <span class="text-sm font-semibold">Feedback in Clinical Education: A Practical Toolkit</span>
+              </div>
+              <p class="text-xs text-secondary mb-8">Providing structured feedback that promotes learning and professional growth in health professions education.</p>
+              <button class="btn btn-sm btn-secondary"><i class="ri-external-link-line"></i> Read Article</button>
+            </div>
+            <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-video-line" style="color:var(--accent);"></i>
+                <span class="text-sm font-semibold">Video: Effective Feedback Conversations</span>
+              </div>
+              <p class="text-xs text-secondary mb-8">15-minute demonstration of the R2C2 model in a simulated dietetics supervision session.</p>
+              <button class="btn btn-sm btn-secondary"><i class="ri-play-circle-line"></i> Watch Video</button>
+            </div>
+            <div style="padding:14px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border);">
+              <div class="flex items-center gap-8 mb-4">
+                <i class="ri-file-pdf-line" style="color:var(--danger);"></i>
+                <span class="text-sm font-semibold">Infographic: R2C2 Framework At-a-Glance</span>
+              </div>
+              <p class="text-xs text-secondary mb-8">One-page visual summary of the R2C2 model for quick reference before feedback sessions.</p>
+              <button class="btn btn-sm btn-secondary"><i class="ri-download-line"></i> Download PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Conversation Starters -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><i class="ri-chat-3-line"></i> Feedback Conversation Starters</div>
+            <div class="card-subtitle">Phrases aligned to R2C2 framework stages</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h4 class="text-sm font-bold mb-8" style="color:var(--primary);">Relationship & Reaction</h4>
+            <div class="flex flex-col gap-4">
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--primary-light); border-radius:var(--radius-sm);">"How are you finding this rotation so far?"</div>
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--primary-light); border-radius:var(--radius-sm);">"How do you think that consultation went?"</div>
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--primary-light); border-radius:var(--radius-sm);">"What aspects are you most proud of?"</div>
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--primary-light); border-radius:var(--radius-sm);">"Is there anything you'd do differently?"</div>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold mb-8" style="color:var(--accent);">Content & Coaching</h4>
+            <div class="flex flex-col gap-4">
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">"I noticed specifically that you..."</div>
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">"One thing that could strengthen this is..."</div>
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">"What would help you work on this?"</div>
+              <div class="text-xs text-secondary" style="padding:8px; background:var(--accent-light); border-radius:var(--radius-sm);">"Let's agree on a plan for next week..."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>
